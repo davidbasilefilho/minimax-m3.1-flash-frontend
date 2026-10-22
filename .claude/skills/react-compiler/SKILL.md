@@ -35,9 +35,9 @@ Not:
 
 ```tsx
 const DashboardRow = memo(({ entity, onSelect }) => {
-  const formatted = useMemo(() => ({ /* ... */ }), [entity]);
+  const formatted = useMemo(() => ({/* ... */}), [entity]);
   const handleClick = useCallback(() => onSelect(entity.id), [entity.id, onSelect]);
-  return /* ... */;
+  return; /* ... */
 });
 ```
 

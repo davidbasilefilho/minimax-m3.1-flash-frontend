@@ -1,10 +1,11 @@
 ---
 type: Reference
-title: "React Compiler Exceptions"
-description: "Five patterns drop the surrounding function out of compilation, often silently."
+title: 'React Compiler Exceptions'
+description: 'Five patterns drop the surrounding function out of compilation, often silently.'
 tags: [react, react-compiler, memoization, lint]
 generated: { by: claude-code/unversioned, at: 2026-05-12T00:00:00Z }
 ---
+
 # React Compiler Exceptions
 
 Five patterns drop the surrounding function out of compilation, often silently. The lint rules in `eslint-plugin-react-hooks` v6+ catch each one, but `recommended` ships most at `warn`. Without promoting them to `error`, the regression shows up later as a re-render bug nobody is looking for.
@@ -90,7 +91,7 @@ return (
 ```tsx
 // The compiler bails here; the recommended-latest preset flags it.
 useEffect(() => {
-  void import("heavy-lib").then(({ default: lib }) => {
+  void import('heavy-lib').then(({ default: lib }) => {
     /* ... */
   });
 }, []);
@@ -99,7 +100,7 @@ useEffect(() => {
 Fix: hoist the dynamic import to a module-level cached promise.
 
 ```tsx
-const heavyLibPromise = import("heavy-lib");
+const heavyLibPromise = import('heavy-lib');
 
 useEffect(() => {
   void heavyLibPromise.then(({ default: lib }) => {
@@ -112,7 +113,7 @@ useEffect(() => {
 
 ```tsx
 function ComplicatedLegacyThing() {
-  "use no memo";
+  'use no memo';
   // compiler skips this function entirely
 }
 ```
@@ -121,13 +122,13 @@ Use sparingly. Every `"use no memo"` is a performance cliff hidden in the codeba
 
 ## Lint coverage map
 
-| Failure mode | Rule that flags it |
-| --- | --- |
+| Failure mode              | Rule that flags it                                |
+| ------------------------- | ------------------------------------------------- |
 | 1. Mutation during render | `react-hooks/immutability` / `react-hooks/purity` |
-| 2. Ref read during render | `react-hooks/refs` |
-| 3. Class components | Not lintable. Design choice. |
-| 4. Unsupported syntax | `react-hooks/unsupported-syntax` |
-| 5. `"use no memo"` | Grep the directive; treat each as a TODO |
+| 2. Ref read during render | `react-hooks/refs`                                |
+| 3. Class components       | Not lintable. Design choice.                      |
+| 4. Unsupported syntax     | `react-hooks/unsupported-syntax`                  |
+| 5. `"use no memo"`        | Grep the directive; treat each as a TODO          |
 
 Enable the `recommended-latest` preset and raise the ones you want to block CI to `error`. Full config in [lint-setup.md](./lint-setup.md).
 
