@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
-import Lenis from 'lenis';
 import { useSelector } from '@tanstack/react-store';
+import Lenis from 'lenis';
+import { useEffect } from 'react';
 
-import { appStore } from '../store/appStore';
 import { registerLenis } from '../lib/scroll';
+import { appStore } from '../store/appStore';
 
 /**
  * Smooth scrolling.
@@ -17,13 +17,17 @@ export function useLenis(): void {
   useEffect(() => {
     if (motion !== 'live') {
       registerLenis(null);
-      return;
+      return () => {
+        registerLenis(null);
+      };
     }
 
-    const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduced) {
       registerLenis(null);
-      return;
+      return () => {
+        registerLenis(null);
+      };
     }
 
     const lenis = new Lenis({

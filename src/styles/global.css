@@ -1,0 +1,444 @@
+/*
+ * SIGNAL — the MiniMax M3.1 Flash design system.
+ *
+ * Tailwind CSS v4, CSS-first. The design tokens live in one `@theme` block,
+ * which means every token is also a utility class:
+ *
+ *   --color-ink            → text-ink, bg-ink, border-ink
+ *   --color-brand-rose     → text-brand-rose
+ *   --font-display         → font-display
+ *   --text-2xl             → text-2xl
+ *   --radius-md            → rounded-md
+ *   --ease-signal          → ease-signal
+ *   --gradient-signal      → bg-signal
+ *   --animate-march        → animate-march
+ *
+ * Colour tokens are the MiniMax Brand Book hues verbatim, plus a surface and
+ * text ramp. The two themes are the same token names with different values,
+ * so switching a theme is a single attribute on <html> and every utility
+ * follows.
+ *
+ * Sources: https://www.minimax.io/brand-vi
+ */
+
+@import 'tailwindcss';
+
+/*
+ * Brand typography, self-hosted.
+ *
+ * The MiniMax Brand Book specifies three families: Libre Baskerville, Outfit
+ * and DM Sans. They are served from /public/fonts so the page has no
+ * third-party font dependency and no layout shift from a late-arriving
+ * stylesheet.
+ */
+
+@font-face {
+  font-family: 'Outfit';
+  src: url('/fonts/outfit-latin.woff2') format('woff2');
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DM Sans';
+  src: url('/fonts/dm-sans-latin.woff2') format('woff2');
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DM Sans';
+  src: url('/fonts/dm-sans-italic-latin.woff2') format('woff2');
+  font-weight: 300 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Libre Baskerville';
+  src: url('/fonts/libre-baskerville-latin.woff2') format('woff2');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Libre Baskerville';
+  src: url('/fonts/libre-baskerville-italic-latin.woff2') format('woff2');
+  font-weight: 400 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@source '../../index.html';
+@source '../**/*.{ts,tsx}';
+
+@theme {
+  /* ── Surfaces and text ──────────────────────────────────────────────────
+   * The `chamber` theme. The `daylight` theme overrides the same token
+   * names further down, so every utility below works in both. */
+
+  --color-canvas: #0a0713;
+  --color-canvas-deep: #06040d;
+  --color-surface: #120d20;
+  --color-surface-2: #1a1330;
+  --color-surface-3: #221a3d;
+  --color-line: #2a2145;
+  --color-line-strong: #3d3163;
+
+  --color-ink: #f4f1fa;
+  --color-ink-2: #b9b0d0;
+  --color-ink-3: #7e74a0;
+
+  /* ── Brand hues ────────────────────────────────────────────────────────
+   * Verbatim from the MiniMax Brand Book. */
+
+  --color-brand-rose: #ff3763;
+  --color-brand-coral: #ff6452;
+  --color-brand-orange: #ff7038;
+  --color-brand-violet: #7a27ff;
+  --color-brand-lilac: #a36aff;
+  --color-brand-azure: #1ba4ff;
+  --color-brand-cyan: #38cdff;
+  --color-brand-deep-red: #9a0010;
+
+  /* Text-safe variants. The raw brand hues do not clear 4.5:1 as body text
+   * on every surface, so each hue gets a legible counterpart per theme. */
+
+  --color-brand-rose-text: #ff8aa4;
+  --color-brand-orange-text: #ffa16f;
+  --color-brand-violet-text: #b98cff;
+  --color-brand-lilac-text: #c9a6ff;
+  --color-brand-azure-text: #6fc0ff;
+  --color-brand-cyan-text: #7fd8ff;
+  --color-brand-positive-text: #7fd8ff;
+  --color-brand-negative-text: #ff9a8c;
+
+  --color-focus: #38cdff;
+
+  /* ── The gradient system ───────────────────────────────────────────────
+   * `signal` is the logo's own gradient. `spectrum` is a data scale:
+   * a score's position on it becomes the score's colour.
+   *
+   * Tailwind has no `--gradient-*` namespace, so the values live here as
+   * tokens and are exposed as utilities by the `@utility` block below. */
+
+  --gradient-signal: linear-gradient(
+    90deg,
+    var(--color-brand-rose) 0%,
+    var(--color-brand-orange) 100%
+  );
+  --gradient-reason: linear-gradient(
+    90deg,
+    var(--color-brand-violet) 0%,
+    var(--color-brand-lilac) 100%
+  );
+  --gradient-throughput: linear-gradient(
+    90deg,
+    var(--color-brand-azure) 0%,
+    var(--color-brand-cyan) 100%
+  );
+  --gradient-spectrum: linear-gradient(
+    90deg,
+    var(--color-brand-violet) 0%,
+    var(--color-brand-rose) 50%,
+    var(--color-brand-orange) 100%
+  );
+
+  /* ── Type ──────────────────────────────────────────────────────────────
+   * The brand's own three families, self-hosted. */
+
+  --font-display: 'Outfit', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-body: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-editorial: 'Libre Baskerville', Georgia, 'Times New Roman', serif;
+  --font-mono: ui-monospace, SFMono-Regular, 'Cascadia Mono', Menlo, monospace;
+
+  --text-2xs: 0.6875rem;
+  --text-2xs--line-height: 1rem;
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.1rem;
+  --text-sm: 0.8125rem;
+  --text-sm--line-height: 1.3rem;
+  --text-base: 0.9375rem;
+  --text-base--line-height: 1.6rem;
+  --text-md: 1rem;
+  --text-md--line-height: 1.65rem;
+  --text-lg: 1.25rem;
+  --text-lg--line-height: 1.75rem;
+  --text-xl: 1.625rem;
+  --text-xl--line-height: 2rem;
+  --text-2xl: 2.125rem;
+  --text-2xl--line-height: 2.3rem;
+  --text-3xl: 2.875rem;
+  --text-3xl--line-height: 2.7rem;
+  --text-4xl: 4rem;
+  --text-4xl--line-height: 1;
+  --text-5xl: 5.5rem;
+  --text-5xl--line-height: 1;
+
+  /* ── Layout ────────────────────────────────────────────────────────────
+   * The shell width, the page gutter and the section rhythm, as theme
+   * tokens so the layout reads in utility form rather than as magic
+   * numbers in a class list. */
+
+  --container-shell: 1360px;
+  --spacing-gutter: 2rem;
+  --spacing-section: 7.5rem;
+  --spacing-rail: 216px;
+
+  /* ── Radii — rounded, always ─────────────────────────────────────────── */
+
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+
+  /* ── Motion ──────────────────────────────────────────────────────────── */
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
+  --ease-signal: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --animate-march: march 3.4s linear infinite;
+
+  @keyframes march {
+    from {
+      stroke-dashoffset: 330;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  --shadow-panel: 0 24px 60px -34px rgb(36 24 74 / 0.38);
+}
+
+/*
+ * The gradient utilities.
+ *
+ * Tailwind v4 has no `--gradient-*` theme namespace, so the four named
+ * gradients are exposed here as real utilities instead. They read the
+ * tokens, which means they follow the active theme.
+ */
+@utility bg-signal {
+  background-image: var(--gradient-signal);
+}
+
+@utility bg-reason {
+  background-image: var(--gradient-reason);
+}
+
+@utility bg-throughput {
+  background-image: var(--gradient-throughput);
+}
+
+@utility bg-spectrum {
+  background-image: var(--gradient-spectrum);
+}
+
+/*
+ * The daylight theme. Same token names, different values, so no utility
+ * class has to know which theme is active.
+ */
+[data-theme='daylight'] {
+  --color-canvas: #f7f6fb;
+  --color-canvas-deep: #eeecf6;
+  --color-surface: #ffffff;
+  --color-surface-2: #f0eef7;
+  --color-surface-3: #e5e2f0;
+  --color-line: #e2deef;
+  --color-line-strong: #c8c1e0;
+
+  --color-ink: #120d20;
+  --color-ink-2: #4a4166;
+  --color-ink-3: #6f6590;
+
+  --color-brand-rose-text: #c21742;
+  --color-brand-orange-text: #a8410f;
+  --color-brand-violet-text: #5a17c4;
+  --color-brand-lilac-text: #7038b8;
+  --color-brand-azure-text: #0a63ad;
+  --color-brand-cyan-text: #0a6f9c;
+  --color-brand-positive-text: #0a6f9c;
+  --color-brand-negative-text: #b02318;
+
+  --color-focus: #0a63ad;
+}
+
+/*
+ * Reduced motion. Every duration collapses; the page still works.
+ * The explicit motion switch in the masthead does the same thing.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+[data-motion='calm'] *,
+[data-motion='calm'] *::before,
+[data-motion='calm'] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+[data-motion='calm'] {
+  scroll-behavior: auto;
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────── */
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 5.5rem;
+  }
+
+  html[data-motion='live'] {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    min-height: 100dvh;
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 500;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /*
+   * The focus ring is never removed. The selector is deliberately more
+   * specific than a class-based rule so it wins against the component
+   * library's own focus styling.
+   */
+  html body :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+    border-radius: var(--radius-xs);
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--color-brand-rose) 42%, transparent);
+    color: var(--color-ink);
+  }
+}
+
+/* ── Components that utilities cannot express ──────────────────────────── */
+
+@layer components {
+  /*
+   * A tinted section runs the full width of the viewport, not just the width
+   * of the content column, so the band reads as one surface rather than a
+   * panel that happens to start in the middle of the page.
+   */
+  .mm-section--tinted {
+    background: var(--color-canvas-deep);
+    box-shadow: 0 0 0 100vmax var(--color-canvas-deep);
+    clip-path: inset(0 -100vmax);
+  }
+
+  /* The hero's primary action gets a gradient halo on top of the focus ring. */
+  .mm-focus-halo:focus-visible {
+    outline: 2px solid var(--color-brand-cyan);
+    outline-offset: 3px;
+    box-shadow:
+      0 0 0 5px color-mix(in srgb, var(--color-brand-rose) 26%, transparent),
+      0 0 0 7px color-mix(in srgb, var(--color-brand-orange) 16%, transparent);
+  }
+
+  /*
+   * The trace stroke. SVG line caps and the travelling glow are easier to
+   * say once than to spell out as arbitrary utilities on every element.
+   */
+  .mm-trace__stroke {
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 0 6px color-mix(in srgb, var(--color-brand-rose) 16%, transparent));
+  }
+
+  .mm-trace__pulse {
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 10 320;
+    opacity: 0.85;
+    animation: var(--animate-march);
+  }
+
+  [data-motion='calm'] .mm-trace__pulse,
+  .mm-trace__pulse[data-calm='true'] {
+    animation: none;
+    opacity: 0.4;
+  }
+
+  /*
+   * The graticule: the scope-screen backdrop. It is a repeating background
+   * with a radial mask, which no utility combination reproduces cleanly.
+   */
+  .mm-graticule {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(
+        to right,
+        color-mix(in srgb, var(--color-brand-violet) 7%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        color-mix(in srgb, var(--color-brand-violet) 7%, transparent) 1px,
+        transparent 1px
+      );
+    background-size: 72px 72px;
+    mask-image: radial-gradient(ellipse 120% 80% at 50% 0%, #000 30%, transparent 78%);
+  }
+
+  .mm-graticule--major {
+    background-image:
+      linear-gradient(
+        to right,
+        color-mix(in srgb, var(--color-brand-violet) 13%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        color-mix(in srgb, var(--color-brand-violet) 13%, transparent) 1px,
+        transparent 1px
+      );
+    background-size: 288px 288px;
+  }
+
+  /*
+   * The base web component library renders a few things with inline
+   * styles that need a nudge to sit on the design system.
+   */
+  [data-baseweb='radio'] {
+    margin-right: 0;
+  }
+}

@@ -1,7 +1,5 @@
 import { motion } from 'motion/react';
 
-import './costBeam.css';
-
 export type CostBeamSegment = {
   id: string;
   label: string;
@@ -44,16 +42,15 @@ export function CostBeam({ segments, total, legend = true, delay = 0 }: CostBeam
     .join(', ');
 
   return (
-    <div className="mm-beam">
+    <div className='flex w-full flex-col gap-4'>
       <div
-        className="mm-beam__track"
-        role="img"
-        aria-label={`Total request cost ${formatUsd(total)}. ${summary || 'No cost yet.'}`}
-      >
+        className='rounded-pill bg-surface-2 flex h-[14px] overflow-hidden shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--color-ink)_10%,transparent)]'
+        role='img'
+        aria-label={`Total request cost ${formatUsd(total)}. ${summary || 'No cost yet.'}`}>
         {segments.map((segment, index) => (
           <motion.span
             key={segment.id}
-            className="mm-beam__segment"
+            className='rounded-pill min-w-[3px]'
             style={{ background: segment.colour }}
             initial={{ flexGrow: 0, opacity: 0 }}
             animate={{ flexGrow: Math.max(segment.share, 0.0001), opacity: 1 }}
@@ -67,16 +64,18 @@ export function CostBeam({ segments, total, legend = true, delay = 0 }: CostBeam
       </div>
 
       {legend ? (
-        <ul className="mm-beam__legend">
+        <ul className='flex flex-wrap gap-3 gap-x-5'>
           {segments.map((segment) => (
-            <li key={segment.id} className="mm-beam__legend-item">
+            <li key={segment.id} className='text-ink-2 flex items-center gap-2 text-sm'>
               <span
-                className="mm-beam__swatch"
+                className='size-[10px] shrink-0 rounded-[3px]'
                 style={{ background: segment.colour }}
-                aria-hidden="true"
+                aria-hidden='true'
               />
-              <span className="mm-beam__legend-label">{segment.label}</span>
-              <span className="mm-beam__legend-value mm-num">{formatUsd(segment.value)}</span>
+              <span>{segment.label}</span>
+              <span className='font-display text-ink font-medium tabular-nums'>
+                {formatUsd(segment.value)}
+              </span>
             </li>
           ))}
         </ul>

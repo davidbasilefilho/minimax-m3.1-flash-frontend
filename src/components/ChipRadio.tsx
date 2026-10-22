@@ -1,7 +1,5 @@
 import { Radio, RadioGroup } from 'baseui/radio';
 
-import './chipRadio.css';
-
 export type ChipRadioOption<T extends string> = {
   value: T;
   label: string;
@@ -20,6 +18,8 @@ export type ChipRadioProps<T extends string> = {
  *
  * Built on Base Web's radio group so the semantics are right: one tab stop,
  * arrow keys move between options, and the selected option is announced.
+ * The radio mark is hidden so the chip reads as a toggle, but the input
+ * itself stays in the accessibility tree and keeps the radio semantics.
  */
 export function ChipRadio<T extends string>({
   name,
@@ -29,19 +29,21 @@ export function ChipRadio<T extends string>({
   onChange,
 }: ChipRadioProps<T>) {
   return (
-    <fieldset className="mm-chips">
-      <legend className="mm-visually-hidden">{legend}</legend>
+    <fieldset className='m-0 min-w-0 border-0 p-0'>
+      <legend className='sr-only'>{legend}</legend>
       <RadioGroup
         name={name}
         value={value}
-        onChange={(event) => onChange(event.target.value as T)}
-        align="horizontal"
+        onChange={(event) => {
+          const next = options.find((option) => option.value === event.target.value);
+          if (next) onChange(next.value);
+        }}
+        align='horizontal'
         overrides={{
           RadioGroupRoot: {
             style: { display: 'flex', gap: '0.35rem', flexWrap: 'wrap' },
           },
-        }}
-      >
+        }}>
         {options.map((option) => (
           <Radio
             key={option.value}
@@ -50,12 +52,12 @@ export function ChipRadio<T extends string>({
             overrides={{
               Root: {
                 style: ({ $checked }: { $checked?: boolean }) => ({
-                  borderRadius: 'var(--mm-radius-pill)',
-                  border: `1px solid ${$checked ? 'var(--mm-rose)' : 'var(--mm-line)'}`,
+                  borderRadius: 'var(--radius-pill)',
+                  border: `1px solid ${$checked ? 'var(--color-brand-rose)' : 'var(--color-line)'}`,
                   backgroundColor: $checked
-                    ? 'color-mix(in srgb, var(--mm-rose) 14%, var(--mm-surface))'
-                    : 'var(--mm-surface)',
-                  color: $checked ? 'var(--mm-ink)' : 'var(--mm-ink-2)',
+                    ? 'color-mix(in srgb, var(--color-brand-rose) 14%, var(--color-surface))'
+                    : 'var(--color-surface)',
+                  color: $checked ? 'var(--color-ink)' : 'var(--color-ink-2)',
                   paddingLeft: '0.95rem',
                   paddingRight: '0.95rem',
                   paddingTop: '0.4rem',
@@ -66,20 +68,15 @@ export function ChipRadio<T extends string>({
               },
               Label: {
                 style: {
-                  fontFamily: 'var(--mm-font-body)',
-                  fontSize: 'var(--mm-text-xs)',
+                  fontFamily: 'var(--font-body)',
+                  fontSize: 'var(--text-xs)',
                   fontWeight: '500',
                   color: 'inherit',
                 },
               },
-              RadioMarkOuter: {
-                style: {
-                  display: 'none',
-                },
-              },
-              RadioMarkInner: { style: { backgroundColor: 'var(--mm-rose)' } },
-            }}
-          >
+              RadioMarkOuter: { style: { display: 'none' } },
+              RadioMarkInner: { style: { backgroundColor: 'var(--color-brand-rose)' } },
+            }}>
             {option.label}
           </Radio>
         ))}

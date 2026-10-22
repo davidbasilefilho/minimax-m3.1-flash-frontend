@@ -1,8 +1,7 @@
-import { SectionHeader } from '../components/SectionHeader';
-import { Reveal } from '../components/Reveal';
 import { Readout } from '../components/Readout';
+import { Reveal } from '../components/Reveal';
+import { SectionHeader } from '../components/SectionHeader';
 import { THROUGHPUT } from '../data/model';
-import './throughput.css';
 
 type SpeedBar = {
   id: string;
@@ -49,54 +48,60 @@ const SPEED_BARS: SpeedBar[] = [
 ];
 
 const KIND_COLOUR = {
-  vendor: 'var(--mm-rose)',
-  measured: 'var(--mm-cyan)',
-  class: 'var(--mm-ink-3)',
+  vendor: 'var(--color-brand-rose)',
+  measured: 'var(--color-brand-cyan)',
+  class: 'var(--color-ink-3)',
 } as const;
 
 export function Throughput() {
   const max = 210;
 
   return (
-    <section id="throughput" className="mm-section" aria-labelledby="throughput-title">
-      <div className="mm-shell">
+    <section id='throughput' className='py-section scroll-mt-20' aria-labelledby='throughput-title'>
+      <div className='max-w-shell px-gutter mx-auto'>
         <Reveal>
           <SectionHeader
-            id="throughput-title"
-            index="06"
-            title="Throughput"
-            blurb="The vendor number and the measured number are not the same number, and the gap is large enough that a reader should see both. Time to first token, by contrast, is better than average."
+            id='throughput-title'
+            index='06'
+            title='Throughput'
+            blurb='The vendor number and the measured number are not the same number, and the gap is large enough that a reader should see both. Time to first token, by contrast, is better than average.'
           />
         </Reveal>
 
-        <div className="mm-section__split">
+        <div className='grid grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] items-start gap-7 max-[960px]:grid-cols-1 max-[960px]:gap-6'>
           <Reveal>
-            <div className="mm-speed">
-              <div className="mm-speed__head">
-                <h3 className="mm-speed__title">Output speed</h3>
-                <span className="mm-speed__unit">tokens per second</span>
+            <div className='border-line bg-surface rounded-md border p-5'>
+              <div className='mb-5 flex items-baseline justify-between gap-3'>
+                <h3 className='font-display text-ink text-lg font-normal'>Output speed</h3>
+                <span className='text-ink-3 text-xs'>tokens per second</span>
               </div>
 
-              <ul className="mm-speed__list">
+              <ul className='flex flex-col gap-4'>
                 {SPEED_BARS.map((bar) => (
-                  <li key={bar.id} className="mm-speed__item">
-                    <span className="mm-speed__label">{bar.label}</span>
-                    <span className="mm-speed__track">
+                  <li
+                    key={bar.id}
+                    className='row-gap-[0.25rem] grid grid-cols-[108px_minmax(0,1fr)_64px] items-center gap-3 max-[640px]:grid-cols-[92px_minmax(0,1fr)_56px]'>
+                    <span className='text-ink-2 text-sm'>{bar.label}</span>
+                    <span className='rounded-pill bg-surface-2 h-[10px] overflow-hidden'>
                       <span
-                        className="mm-speed__fill"
+                        className='rounded-pill block h-full'
                         style={{
                           width: `${(bar.value / max) * 100}%`,
                           background: KIND_COLOUR[bar.kind],
                         }}
                       />
                     </span>
-                    <span className="mm-speed__value mm-num">{bar.display}</span>
-                    <span className="mm-speed__note">{bar.note}</span>
+                    <span className='font-display text-md text-ink text-right tabular-nums'>
+                      {bar.display}
+                    </span>
+                    <span className='text-ink-3 col-span-2 col-start-2 text-xs leading-[1.5] max-[640px]:col-span-3 max-[640px]:col-start-1'>
+                      {bar.note}
+                    </span>
                   </li>
                 ))}
               </ul>
 
-              <p className="mm-speed__caveat">
+              <p className='border-line text-ink-3 mt-5 border-t pt-4 text-xs leading-[1.6]'>
                 MiniMax attributes its speed-up to more aggressive sparsity in inference, and
                 reports close to three times faster online inference than M3. The independent
                 measurement was taken on the MiniMax API, so it includes everything the API adds —
@@ -106,50 +111,53 @@ export function Throughput() {
           </Reveal>
 
           <Reveal delay={0.1}>
-            <div className="mm-speed__readouts">
-              {THROUGHPUT.filter((item) => item.id === 'ttft' || item.id === 'faster').map((item) => (
-                <Readout
-                  key={item.id}
-                  label={item.label}
-                  value={item.value}
-                  unit={item.unit}
-                  note={item.detail}
-                  source={item.source}
-                  size="md"
-                  tone={item.source === 'measured' ? 'throughput' : 'ink'}
-                />
-              ))}
+            <div className='flex flex-col gap-6'>
+              {THROUGHPUT.filter((item) => item.id === 'ttft' || item.id === 'faster').map(
+                (item) => (
+                  <Readout
+                    key={item.id}
+                    label={item.label}
+                    value={item.value}
+                    unit={item.unit}
+                    note={item.detail}
+                    source={item.source}
+                    size='md'
+                    tone={item.source === 'measured' ? 'throughput' : 'ink'}
+                  />
+                ),
+              )}
 
-              <div className="mm-speed__latency">
-                <h3 className="mm-speed__latency-title">Time to first token</h3>
-                <div className="mm-speed__latency-bars">
-                  <div className="mm-speed__latency-row">
-                    <span className="mm-speed__latency-label">M3.1 Flash</span>
-                    <span className="mm-speed__latency-track">
+              <div className='border-line bg-surface rounded-md border p-5'>
+                <h3 className='font-display text-md text-ink mb-4'>Time to first token</h3>
+                <div className='flex flex-col gap-3'>
+                  <div className='grid grid-cols-[110px_minmax(0,1fr)_56px] items-center gap-3'>
+                    <span className='text-ink-2 text-sm'>M3.1 Flash</span>
+                    <span className='rounded-pill bg-surface-2 h-[10px] overflow-hidden'>
                       <span
-                        className="mm-speed__latency-fill"
-                        style={{ width: `${(1.43 / 3) * 100}%`, background: 'var(--mm-cyan)' }}
+                        className='rounded-pill bg-brand-cyan block h-full'
+                        style={{ width: `${(1.43 / 3) * 100}%` }}
                       />
                     </span>
-                    <span className="mm-speed__latency-value mm-num">1.43s</span>
+                    <span className='font-display text-ink text-right text-sm tabular-nums'>
+                      1.43s
+                    </span>
                   </div>
-                  <div className="mm-speed__latency-row">
-                    <span className="mm-speed__latency-label">Class median</span>
-                    <span className="mm-speed__latency-track">
+                  <div className='grid grid-cols-[110px_minmax(0,1fr)_56px] items-center gap-3'>
+                    <span className='text-ink-2 text-sm'>Class median</span>
+                    <span className='rounded-pill bg-surface-2 h-[10px] overflow-hidden'>
                       <span
-                        className="mm-speed__latency-fill"
-                        style={{
-                          width: `${(1.69 / 3) * 100}%`,
-                          background: 'var(--mm-ink-3)',
-                        }}
+                        className='rounded-pill bg-ink-3 block h-full'
+                        style={{ width: `${(1.69 / 3) * 100}%` }}
                       />
                     </span>
-                    <span className="mm-speed__latency-value mm-num">1.69s</span>
+                    <span className='font-display text-ink text-right text-sm tabular-nums'>
+                      1.69s
+                    </span>
                   </div>
                 </div>
-                <p className="mm-speed__caveat">
-                  Better than the 1.69s median for the price class. Always-on reasoning still
-                  sets a floor: the thinking time is counted here.
+                <p className='border-line text-ink-3 mt-5 border-t pt-4 text-xs leading-[1.6]'>
+                  Better than the 1.69s median for the price class. Always-on reasoning still sets a
+                  floor: the thinking time is counted here.
                 </p>
               </div>
             </div>

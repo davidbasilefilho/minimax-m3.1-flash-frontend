@@ -20,7 +20,7 @@ export function getLenis(): Lenis | null {
 
 /** Scroll a section into view, leaving room for the sticky masthead. */
 export function scrollToId(id: string, offset = -92): void {
-  const target = document.getElementById(id);
+  const target = document.querySelector<HTMLElement>(`[id="${id}"]`);
   if (!target) return;
 
   if (instance) {
@@ -33,7 +33,7 @@ export function scrollToId(id: string, offset = -92): void {
 /** Move focus as well as scroll, so keyboard users land where the eye goes. */
 export function scrollToIdAndFocus(id: string): void {
   scrollToId(id);
-  const target = document.getElementById(id);
+  const target = document.querySelector<HTMLElement>(`[id="${id}"]`);
   if (!target) return;
   const heading = target.querySelector<HTMLElement>('h1, h2, h3');
   const focusTarget = heading ?? target;

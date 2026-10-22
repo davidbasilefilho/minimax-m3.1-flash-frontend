@@ -46,13 +46,7 @@ export const GROUPS: readonly GroupSpec[] = [
 ] as const;
 
 export type CompetitorId =
-  | 'minimax'
-  | 'deepseek-1017'
-  | 'deepseek-41'
-  | 'kimi-k3'
-  | 'glm-53'
-  | 'gpt-56-sol'
-  | 'opus-5';
+  'minimax' | 'deepseek-1017' | 'deepseek-41' | 'kimi-k3' | 'glm-53' | 'gpt-56-sol' | 'opus-5';
 
 export type Competitor = {
   id: CompetitorId;
@@ -282,8 +276,7 @@ export const BENCHMARKS: readonly BenchmarkRow[] = [
     id: 'deepswe',
     group: 'coding',
     name: 'DeepSWE v1.1',
-    methodology:
-      'Harness: mini-SWE-agent 2.4.5, maximum context window of 512K tokens.',
+    methodology: 'Harness: mini-SWE-agent 2.4.5, maximum context window of 512K tokens.',
     scores: {
       minimax: 73.7,
       'deepseek-1017': 77.0,
@@ -333,8 +326,7 @@ export const BENCHMARKS: readonly BenchmarkRow[] = [
     id: 'cybergym',
     group: 'cyber',
     name: 'CyberGym',
-    methodology:
-      'Harness: Claude Code 2.1.263, maximum context window of 1M tokens.',
+    methodology: 'Harness: Claude Code 2.1.263, maximum context window of 1M tokens.',
     scores: {
       minimax: 82.2,
       'deepseek-1017': null,
@@ -407,7 +399,17 @@ export type AlePoint = {
   model: string;
   passRate: number;
   costUsd: number;
-  vendor: 'MiniMax' | 'OpenAI' | 'Anthropic' | 'Meta' | 'Alibaba' | 'xAI' | 'Moonshot' | 'Zhipu' | 'DeepSeek' | 'Google';
+  vendor:
+    | 'MiniMax'
+    | 'OpenAI'
+    | 'Anthropic'
+    | 'Meta'
+    | 'Alibaba'
+    | 'xAI'
+    | 'Moonshot'
+    | 'Zhipu'
+    | 'DeepSeek'
+    | 'Google';
 };
 
 export const ALE_CURVE: readonly AlePoint[] = [

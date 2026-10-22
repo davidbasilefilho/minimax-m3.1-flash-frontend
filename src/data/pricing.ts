@@ -41,7 +41,11 @@ export type CostInput = {
  * Cost of a single request under the published flat rates.
  * Cached input is billed at the cache-read rate, not the fresh input rate.
  */
-export function computeCost({ inputTokens, cachedInputTokens, outputTokens }: CostInput): CostBreakdown {
+export function computeCost({
+  inputTokens,
+  cachedInputTokens,
+  outputTokens,
+}: CostInput): CostBreakdown {
   const input = (Math.max(0, inputTokens) / PRICING.per) * PRICING.input;
   const cached = (Math.max(0, cachedInputTokens) / PRICING.per) * PRICING.cachedInput;
   const output = (Math.max(0, outputTokens) / PRICING.per) * PRICING.output;

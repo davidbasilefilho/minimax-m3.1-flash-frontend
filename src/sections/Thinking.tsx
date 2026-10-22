@@ -1,13 +1,12 @@
-import { Radio, RadioGroup } from 'baseui/radio';
 import { useSelector } from '@tanstack/react-store';
+import { Radio, RadioGroup } from 'baseui/radio';
 import { motion } from 'motion/react';
 
-import { SectionHeader } from '../components/SectionHeader';
 import { Reveal } from '../components/Reveal';
+import { SectionHeader } from '../components/SectionHeader';
 import { Trace } from '../components/Trace';
-import { EFFORTS, EFFORT_ORDER, MODEL } from '../data/model';
-import { appStore, actions } from '../store/appStore';
-import './thinking.css';
+import { EFFORT_ORDER, EFFORTS, MODEL } from '../data/model';
+import { actions, appStore } from '../store/appStore';
 
 /**
  * The effort curve.
@@ -46,28 +45,30 @@ function EffortCurve({
   const y = (score: number) =>
     height - padBottom - ((score - min) / (max - min)) * (height - padBottom - padTop);
 
-  const line = points.map((point, index) => `${index === 0 ? 'M' : 'L'} ${x(index)} ${y(point.score)}`).join(' ');
+  const line = points
+    .map((point, index) => `${index === 0 ? 'M' : 'L'} ${x(index)} ${y(point.score)}`)
+    .join(' ');
   const area = `${line} L ${x(points.length - 1)} ${height - padBottom} L ${x(0)} ${height - padBottom} Z`;
+  const gradientId = `curve-${title.replaceAll(/\W/gu, '')}`;
 
   return (
-    <figure className="mm-thinking__curve">
-      <figcaption className="mm-thinking__curve-head">
-        <span className="mm-thinking__curve-title">{title}</span>
-        <span className="mm-thinking__curve-source">{source}</span>
+    <figure className='border-line bg-surface m-0 rounded-md border p-5'>
+      <figcaption className='mb-3 flex flex-wrap items-baseline justify-between gap-3'>
+        <span className='font-display text-md text-ink'>{title}</span>
+        <span className='text-ink-3 text-xs'>{source}</span>
       </figcaption>
 
       <svg
         viewBox={`0 0 ${width} ${height}`}
-        className="mm-thinking__curve-svg"
-        role="img"
+        className='h-auto w-full overflow-visible'
+        role='img'
         aria-label={`${title}. ${points
           .map((point) => `${point.effort} ${point.score}${unit}`)
-          .join(', ')}.`}
-      >
+          .join(', ')}.`}>
         <defs>
-          <linearGradient id={`curve-${title.replace(/\W/g, '')}`} x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="var(--mm-violet)" />
-            <stop offset="100%" stopColor="var(--mm-orange)" />
+          <linearGradient id={gradientId} x1='0' y1='0' x2='1' y2='0'>
+            <stop offset='0%' stopColor='var(--color-brand-violet)' />
+            <stop offset='100%' stopColor='var(--color-brand-orange)' />
           </linearGradient>
         </defs>
 
@@ -80,31 +81,30 @@ function EffortCurve({
                 x2={width - padRight}
                 y1={y(value)}
                 y2={y(value)}
-                stroke="var(--mm-line)"
-                strokeWidth="1"
-                vectorEffect="non-scaling-stroke"
+                stroke='var(--color-line)'
+                strokeWidth='1'
+                vectorEffect='non-scaling-stroke'
               />
               <text
                 x={padLeft - 8}
                 y={y(value) + 3}
-                textAnchor="end"
-                className="mm-thinking__tick"
-              >
+                textAnchor='end'
+                className='fill-ink-3 font-body text-[10px] tabular-nums'>
                 {value.toFixed(0)}
               </text>
             </g>
           );
         })}
 
-        <path d={area} fill="url(#curve-Signal)" opacity="0.08" />
+        <path d={area} fill={`url(#${gradientId})`} opacity='0.08' />
         <path
           d={line}
-          fill="none"
-          stroke={`url(#curve-${title.replace(/\W/g, '')})`}
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          vectorEffect="non-scaling-stroke"
+          fill='none'
+          stroke={`url(#${gradientId})`}
+          strokeWidth='2'
+          strokeLinecap='round'
+          strokeLinejoin='round'
+          vectorEffect='non-scaling-stroke'
         />
 
         {points.map((point, index) => {
@@ -115,29 +115,29 @@ function EffortCurve({
                 cx={x(index)}
                 cy={y(point.score)}
                 r={active ? 6 : 3.5}
-                fill={active ? 'var(--mm-rose)' : 'var(--mm-surface)'}
-                stroke={active ? 'var(--mm-rose)' : 'var(--mm-line-strong)'}
-                strokeWidth="2"
-                vectorEffect="non-scaling-stroke"
+                fill={active ? 'var(--color-brand-rose)' : 'var(--color-surface)'}
+                stroke={active ? 'var(--color-brand-rose)' : 'var(--color-line-strong)'}
+                strokeWidth='2'
+                vectorEffect='non-scaling-stroke'
               />
               <text
                 x={x(index)}
                 y={height - padBottom + 16}
-                textAnchor="middle"
-                className={`mm-thinking__tick${active ? ' is-active' : ''}`}
-              >
+                textAnchor='middle'
+                className={`font-body text-[10px] tabular-nums ${
+                  active ? 'fill-brand-rose-text font-semibold' : 'fill-ink-3'
+                }`}>
                 {point.effort}
               </text>
               {active ? (
                 <motion.text
                   x={x(index)}
                   y={y(point.score) - 14}
-                  textAnchor="middle"
-                  className="mm-thinking__value"
+                  textAnchor='middle'
+                  className='fill-brand-rose-text font-display text-[13px] tabular-nums'
                   initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
+                  transition={{ duration: 0.3 }}>
                   {point.score}
                   {unit}
                 </motion.text>
@@ -158,33 +158,35 @@ export function Thinking() {
   const intensity = 0.5 + (activeIndex / (EFFORT_ORDER.length - 1)) * 0.5;
 
   return (
-    <section id="thinking" className="mm-section" aria-labelledby="thinking-title">
-      <div className="mm-shell">
+    <section id='thinking' className='py-section scroll-mt-20' aria-labelledby='thinking-title'>
+      <div className='max-w-shell px-gutter mx-auto'>
         <Reveal>
           <SectionHeader
-            id="thinking-title"
-            index="03"
-            title="Thinking depth"
-            blurb="M3.1 Flash reasons before it answers, and it cannot be told not to. What you control is how long it thinks — and that choice moves the score, the cost and the latency together."
+            id='thinking-title'
+            index='03'
+            title='Thinking depth'
+            blurb='M3.1 Flash reasons before it answers, and it cannot be told not to. What you control is how long it thinks — and that choice moves the score, the cost and the latency together.'
           />
         </Reveal>
 
-        <div className="mm-section__split">
+        <div className='grid grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] items-start gap-7 max-[960px]:grid-cols-1 max-[960px]:gap-6'>
           <Reveal>
-            <div className="mm-thinking__dial">
-              <fieldset className="mm-thinking__fieldset">
-                <legend className="mm-thinking__legend">Thinking depth</legend>
+            <div className='flex flex-col gap-4'>
+              <fieldset className='m-0 border-0 p-0'>
+                <legend className='text-ink-3 pb-3 text-xs'>Thinking depth</legend>
                 <RadioGroup
-                  name="mm-effort"
+                  name='mm-effort'
                   value={effort}
-                  onChange={(event) => actions.setEffort(event.target.value as typeof effort)}
-                  align="horizontal"
+                  onChange={(event) => {
+                    const next = EFFORTS.find((entry) => entry.id === event.target.value);
+                    if (next) actions.setEffort(next.id);
+                  }}
+                  align='horizontal'
                   overrides={{
                     RadioGroupRoot: {
-                      style: { display: 'flex', gap: 'var(--mm-space-2)', flexWrap: 'wrap' },
+                      style: { display: 'flex', gap: '0.5rem', flexWrap: 'wrap' },
                     },
-                  }}
-                >
+                  }}>
                   {EFFORTS.map((entry) => (
                     <Radio
                       key={entry.id}
@@ -193,12 +195,14 @@ export function Thinking() {
                       overrides={{
                         Root: {
                           style: ({ $checked }: { $checked?: boolean }) => ({
-                            borderRadius: 'var(--mm-radius-pill)',
-                            border: `1px solid ${$checked ? 'var(--mm-rose)' : 'var(--mm-line)'}`,
+                            borderRadius: 'var(--radius-pill)',
+                            border: `1px solid ${
+                              $checked ? 'var(--color-brand-rose)' : 'var(--color-line)'
+                            }`,
                             backgroundColor: $checked
-                              ? 'color-mix(in srgb, var(--mm-rose) 14%, var(--mm-surface))'
-                              : 'var(--mm-surface)',
-                            color: $checked ? 'var(--mm-ink)' : 'var(--mm-ink-2)',
+                              ? 'color-mix(in srgb, var(--color-brand-rose) 14%, var(--color-surface))'
+                              : 'var(--color-surface)',
+                            color: $checked ? 'var(--color-ink)' : 'var(--color-ink-2)',
                             paddingLeft: '1rem',
                             paddingRight: '1rem',
                             paddingTop: '0.45rem',
@@ -206,44 +210,39 @@ export function Thinking() {
                             marginTop: 0,
                             marginBottom: 0,
                             transition:
-                              'border-color var(--mm-dur-2) var(--mm-ease-out-expo), background-color var(--mm-dur-2) var(--mm-ease-out-expo)',
+                              'border-color 280ms var(--ease-out-expo), background-color 280ms var(--ease-out-expo)',
                           }),
                         },
                         Label: {
                           style: {
-                            fontFamily: 'var(--mm-font-display)',
-                            fontSize: 'var(--mm-text-sm)',
+                            fontFamily: 'var(--font-display)',
+                            fontSize: 'var(--text-sm)',
                             fontWeight: '500',
                             color: 'inherit',
                           },
                         },
-                        RadioMarkOuter: {
-                          style: {
-                            display: 'none',
-                          },
-                        },
-                        RadioMarkInner: { style: { backgroundColor: 'var(--mm-rose)' } },
-                      }}
-                    >
+                        RadioMarkOuter: { style: { display: 'none' } },
+                        RadioMarkInner: { style: { backgroundColor: 'var(--color-brand-rose)' } },
+                      }}>
                       {entry.label}
                     </Radio>
                   ))}
                 </RadioGroup>
               </fieldset>
 
-              <p className="mm-thinking__note">{level.note}</p>
+              <p className='text-md text-ink-2 max-w-[46ch]'>{level.note}</p>
 
-              <div className="mm-thinking__readout">
-                <div>
-                  <span className="mm-thinking__readout-label">Automation-Bench v1.0.6</span>
-                  <span className="mm-thinking__readout-value mm-num">
+              <div className='border-line flex gap-7 border-t pt-4'>
+                <div className='flex flex-col gap-[0.2rem]'>
+                  <span className='text-ink-3 text-xs'>Automation-Bench v1.0.6</span>
+                  <span className='font-display text-ink flex items-baseline gap-[0.15rem] text-xl leading-none font-light tabular-nums'>
                     {level.automationBench}
-                    <span className="mm-thinking__readout-unit">%</span>
+                    <span className='font-body text-ink-3 text-sm'>%</span>
                   </span>
                 </div>
-                <div>
-                  <span className="mm-thinking__readout-label">Cost per task</span>
-                  <span className="mm-thinking__readout-value mm-num">
+                <div className='flex flex-col gap-[0.2rem]'>
+                  <span className='text-ink-3 text-xs'>Cost per task</span>
+                  <span className='font-display text-ink text-xl leading-none font-light tabular-nums'>
                     ${level.costPerTask.toFixed(3)}
                   </span>
                 </div>
@@ -252,18 +251,18 @@ export function Thinking() {
           </Reveal>
 
           <Reveal delay={0.1}>
-            <div className="mm-thinking__visual">
-              <div className="mm-thinking__trace">
+            <div className='border-line bg-surface rounded-md border p-5'>
+              <div className='h-[150px]'>
                 <Trace
                   bars={36}
                   seed={5}
                   intensity={intensity}
-                  tone="reason"
+                  tone='reason'
                   strokeWidth={2.5}
                   label={`Reasoning trace at ${level.label} effort`}
                 />
               </div>
-              <p className="mm-thinking__trace-caption">
+              <p className='text-ink-3 mt-4 text-xs'>
                 The trace is the model thinking. Its amplitude is the depth you selected.
               </p>
             </div>
@@ -271,16 +270,16 @@ export function Thinking() {
         </div>
 
         <Reveal delay={0.12}>
-          <div className="mm-thinking__curves">
+          <div className='mt-7 grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-5'>
             <EffortCurve
-              title="Automation-Bench"
-              source="v1.0.6 · vendor reported"
+              title='Automation-Bench'
+              source='v1.0.6 · vendor reported'
               points={EFFORTS.map((entry) => ({ effort: entry.id, score: entry.automationBench }))}
               activeIndex={activeIndex}
             />
             <EffortCurve
-              title="DeepSWE"
-              source="v1.1 · leaderboard as of 2026-09-22"
+              title='DeepSWE'
+              source='v1.1 · leaderboard as of 2026-09-22'
               points={[
                 { effort: 'low', score: 67.3 },
                 { effort: 'high', score: 68.1 },
@@ -293,18 +292,31 @@ export function Thinking() {
         </Reveal>
 
         <Reveal delay={0.16}>
-          <div className="mm-thinking__warning">
-            <div className="mm-thinking__warning-head">
-              <span className="mm-thinking__warning-code mm-num">400</span>
+          <div className='border-brand-coral/40 bg-brand-coral/7 mt-6 rounded-md border p-5'>
+            <div className='flex items-start gap-4'>
+              <span className='font-display text-brand-negative-text pt-[0.1rem] text-xl leading-none font-light tabular-nums'>
+                400
+              </span>
               <div>
-                <h3 className="mm-thinking__warning-title">Thinking cannot be turned off</h3>
-                <p className="mm-thinking__warning-body">
-                  Sending <code>thinking: {'{"type": "disabled"}'}</code> or{' '}
-                  <code>effort: "none"</code> returns an error. Lower the effort level instead.
+                <h3 className='font-display text-md text-ink mb-2 font-medium'>
+                  Thinking cannot be turned off
+                </h3>
+                <p className='text-ink-2 max-w-[62ch] text-sm'>
+                  Sending{' '}
+                  <code className='border-line bg-surface-2 text-ink rounded-xs border px-[0.35em] py-[0.05em] font-mono text-[0.92em]'>
+                    thinking: {'{"type": "disabled"}'}
+                  </code>{' '}
+                  or{' '}
+                  <code className='border-line bg-surface-2 text-ink rounded-xs border px-[0.35em] py-[0.05em] font-mono text-[0.92em]'>
+                    effort: &quot;none&quot;
+                  </code>{' '}
+                  returns an error. Lower the effort level instead.
                 </p>
               </div>
             </div>
-            <pre className="mm-thinking__error" aria-label="Example error response">
+            <pre
+              className='border-line bg-canvas-deep text-brand-negative-text mt-4 overflow-x-auto rounded-sm border px-4 py-3 font-mono text-sm'
+              aria-label='Example error response'>
               <code>{MODEL.reasoning.disableAttempt}</code>
             </pre>
           </div>

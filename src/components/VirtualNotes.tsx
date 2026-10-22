@@ -1,8 +1,7 @@
-import { useRef } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
+import { useRef } from 'react';
 
 import type { FieldNote } from '../data/fieldNotes';
-import './virtualNotes.css';
 
 export type VirtualNotesProps = {
   notes: readonly FieldNote[];
@@ -30,31 +29,51 @@ export function VirtualNotes({ notes, expanded }: VirtualNotesProps) {
 
   return (
     <div
-      className={`mm-notes__scroll${expanded ? ' is-expanded' : ''}`}
+      className={`border-line bg-surface h-[460px] overflow-y-auto overscroll-contain rounded-md border px-5 py-4 max-[720px]:px-4 ${
+        expanded ? 'h-[760px]' : ''
+      }`}
       ref={parentRef}
-      role="region"
-      aria-label="Field notes log"
-      tabIndex={0}
-    >
-      <div className="mm-notes__spacer" style={{ height: virtualizer.getTotalSize() }}>
+      role='region'
+      aria-label='Field notes log'
+      // A scrollable region must be reachable by keyboard, or a keyboard user
+      // cannot scroll it. This is the WAI-ARIA scrollable-region pattern.
+      // oxlint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+      tabIndex={0}>
+      <div className='relative w-full' style={{ height: virtualizer.getTotalSize() }}>
         {virtualizer.getVirtualItems().map((item) => {
           const note = notes[item.index];
           return (
             <article
               key={item.key}
-              className="mm-notes__entry"
+              className='border-line absolute top-0 left-0 w-full border-b py-4'
               style={{ transform: `translateY(${item.start}px)` }}
               aria-posinset={item.index + 1}
-              aria-setsize={notes.length}
-            >
-              <div className="mm-notes__entry-head">
-                <time className="mm-notes__date mm-num" dateTime={note.date}>
+              aria-setsize={notes.length}>
+              <div className='mb-[0.35rem] flex items-center gap-3'>
+                <time
+                  className='font-display text-ink-3 text-xs tracking-[0.02em] tabular-nums'
+                  dateTime={note.date}>
                   {note.date}
                 </time>
-                <span className={`mm-notes__kind mm-notes__kind--${note.kind}`}>{note.kind}</span>
+                <span
+                  className={`rounded-pill border px-[0.4rem] py-[0.05rem] text-[9px] tracking-[0.07em] uppercase ${
+                    note.kind === 'release'
+                      ? 'border-brand-rose/44 text-brand-rose-text'
+                      : note.kind === 'benchmark'
+                        ? 'border-brand-orange/44 text-brand-orange-text'
+                        : note.kind === 'research'
+                          ? 'border-brand-violet/44 text-brand-violet-text'
+                          : note.kind === 'cost'
+                            ? 'border-brand-cyan/44 text-brand-cyan-text'
+                            : 'border-line-strong text-ink-3'
+                  }`}>
+                  {note.kind}
+                </span>
               </div>
-              <h3 className="mm-notes__entry-title">{note.title}</h3>
-              <p className="mm-notes__entry-body">{note.body}</p>
+              <h3 className='font-display text-md text-ink mb-[0.2rem] font-medium'>
+                {note.title}
+              </h3>
+              <p className='text-ink-2 max-w-[78ch] text-sm leading-[1.6]'>{note.body}</p>
             </article>
           );
         })}

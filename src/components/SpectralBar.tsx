@@ -1,7 +1,6 @@
 import { motion } from 'motion/react';
 
 import { normalisedPosition, spectrumColor } from '../lib/spectrum';
-import './spectralBar.css';
 
 export type SpectralBarProps = {
   /** The raw benchmark score, as published. */
@@ -44,20 +43,25 @@ export function SpectralBar({
   const colour = spectrumColor(position);
 
   return (
-    <div className={`mm-spectral${isSubject ? ' mm-spectral--subject' : ''}`}>
-      <div className="mm-spectral__track">
-        {ghostPosition !== null ? (
+    <div className='flex w-full flex-col gap-[0.375rem]'>
+      <div
+        className={`rounded-pill bg-surface-2 relative overflow-hidden ${
+          isSubject
+            ? 'h-[10px] shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--color-ink)_12%,transparent)]'
+            : 'h-2'
+        }`}>
+        {ghostPosition === null ? null : (
           <motion.span
-            className="mm-spectral__ghost"
+            className='rounded-pill absolute inset-y-0 left-0 opacity-[0.22]'
             style={{ background: spectrumColor(ghostPosition) }}
             initial={still ? false : { width: 0 }}
             animate={{ width: `${ghostPosition}%` }}
             transition={{ duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] }}
           />
-        ) : null}
+        )}
 
         <motion.span
-          className="mm-spectral__fill"
+          className='rounded-pill absolute inset-y-0 left-0'
           style={{ background: colour }}
           initial={still ? false : { width: 0 }}
           animate={{ width: `${position}%` }}
@@ -71,7 +75,7 @@ export function SpectralBar({
         />
       </div>
 
-      <span className="mm-visually-hidden">{label}</span>
+      <span className='sr-only'>{label}</span>
     </div>
   );
 }
@@ -84,10 +88,10 @@ export function SpectralBar({
  */
 export function SpectralLegend({ low, high }: { low: string; high: string }) {
   return (
-    <div className="mm-spectral-legend">
-      <span className="mm-spectral-legend-label">{low}</span>
-      <span className="mm-spectral-legend-bar" aria-hidden="true" />
-      <span className="mm-spectral-legend-label">{high}</span>
+    <div className='mt-2 flex items-center gap-3'>
+      <span className='text-ink-3 text-[10px] tracking-[0.04em] whitespace-nowrap'>{low}</span>
+      <span className='rounded-pill bg-spectrum h-1 flex-1' aria-hidden='true' />
+      <span className='text-ink-3 text-[10px] tracking-[0.04em] whitespace-nowrap'>{high}</span>
     </div>
   );
 }

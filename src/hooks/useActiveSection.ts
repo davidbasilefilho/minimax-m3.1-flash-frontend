@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
 import { useSelector } from '@tanstack/react-store';
+import { useEffect } from 'react';
 
-import { appStore, actions } from '../store/appStore';
+import { actions, appStore } from '../store/appStore';
 
 /**
  * Track which section is in view.
@@ -12,7 +12,9 @@ import { appStore, actions } from '../store/appStore';
  */
 export function useActiveSection(ids: readonly string[]): void {
   useEffect(() => {
-    if (typeof IntersectionObserver === 'undefined') return;
+    if (typeof IntersectionObserver === 'undefined') {
+      return () => {};
+    }
 
     const visible = new Map<string, IntersectionObserverEntry>();
 
@@ -45,7 +47,7 @@ export function useActiveSection(ids: readonly string[]): void {
     );
 
     for (const id of ids) {
-      const element = document.getElementById(id);
+      const element = document.querySelector<HTMLElement>(`[id="${id}"]`);
       if (element) observer.observe(element);
     }
 

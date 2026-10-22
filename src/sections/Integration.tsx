@@ -1,10 +1,9 @@
-import { useState } from 'react';
 import { Tab, Tabs } from 'baseui/tabs';
+import { useState } from 'react';
 
-import { SectionHeader } from '../components/SectionHeader';
 import { Reveal } from '../components/Reveal';
+import { SectionHeader } from '../components/SectionHeader';
 import { ACCESS_PATHS, MIGRATION_STEPS, PROTOCOLS, REQUEST_EXAMPLES } from '../data/access';
-import './integration.css';
 
 function CodeBlock({ code, label }: { code: string; label: string }) {
   const [copied, setCopied] = useState(false);
@@ -20,14 +19,19 @@ function CodeBlock({ code, label }: { code: string; label: string }) {
   }
 
   return (
-    <div className="mm-code">
-      <div className="mm-code__head">
-        <span className="mm-code__label">{label}</span>
-        <button type="button" className="mm-code__copy" onClick={copy}>
+    <div className='border-line bg-canvas-deep overflow-hidden rounded-md border'>
+      <div className='border-line bg-surface flex items-center justify-between gap-3 border-b px-4 py-2'>
+        <span className='text-ink-3 text-xs'>{label}</span>
+        <button
+          type='button'
+          className='rounded-pill border-line bg-surface-2 text-ink-2 ease-out-expo hover:text-ink cursor-pointer border px-[0.7rem] py-[0.2rem] text-xs transition-colors duration-150'
+          onClick={() => {
+            void copy();
+          }}>
           {copied ? 'Copied' : 'Copy'}
         </button>
       </div>
-      <pre className="mm-code__body" tabIndex={0}>
+      <pre className='text-ink-2 overflow-x-auto px-4 py-4 font-mono text-sm leading-[1.65]'>
         <code>{code}</code>
       </pre>
     </div>
@@ -39,14 +43,17 @@ export function Integration() {
   const active = PROTOCOLS.find((entry) => entry.id === protocol) ?? PROTOCOLS[0];
 
   return (
-    <section id="integration" className="mm-section" aria-labelledby="integration-title">
-      <div className="mm-shell">
+    <section
+      id='integration'
+      className='py-section scroll-mt-20'
+      aria-labelledby='integration-title'>
+      <div className='max-w-shell px-gutter mx-auto'>
         <Reveal>
           <SectionHeader
-            id="integration-title"
-            index="07"
-            title="Integration"
-            blurb="Two protocols, the same model, and one migration step that breaks integrations written for M3. MiniMax recommends the Anthropic-compatible path."
+            id='integration-title'
+            index='07'
+            title='Integration'
+            blurb='Two protocols, the same model, and one migration step that breaks integrations written for M3. MiniMax recommends the Anthropic-compatible path.'
           />
         </Reveal>
 
@@ -59,61 +66,59 @@ export function Integration() {
               TabBar: {
                 style: {
                   backgroundColor: 'transparent',
-                  borderBottomColor: 'var(--mm-line)',
-                  gap: 'var(--mm-space-2)',
+                  borderBottomColor: 'var(--color-line)',
+                  gap: '0.5rem',
                 },
               },
               Tab: {
                 style: ({ $active }: { $active?: boolean }) => ({
-                  fontFamily: 'var(--mm-font-body)',
-                  fontSize: 'var(--mm-text-sm)',
+                  fontFamily: 'var(--font-body)',
+                  fontSize: 'var(--text-sm)',
                   fontWeight: $active ? '500' : '400',
-                  color: $active ? 'var(--mm-ink)' : 'var(--mm-ink-3)',
+                  color: $active ? 'var(--color-ink)' : 'var(--color-ink-3)',
                   // `borderBottom`, not the longhand properties — Styletron
                   // renders atomically and mixing the two breaks the rule.
-                  borderBottom: `2px solid ${$active ? 'var(--mm-rose)' : 'transparent'}`,
+                  borderBottom: `2px solid ${$active ? 'var(--color-brand-rose)' : 'transparent'}`,
                   paddingTop: '0.6rem',
                   paddingBottom: '0.6rem',
                   marginLeft: 0,
-                  marginRight: 'var(--mm-space-2)',
-                  borderRadius: 'var(--mm-radius-sm)',
+                  marginRight: '0.5rem',
+                  borderRadius: 'var(--radius-sm)',
                 }),
               },
-              TabContent: { style: { paddingTop: 'var(--mm-space-5)' } },
-            }}
-          >
+              TabContent: { style: { paddingTop: '0.5rem' } },
+            }}>
             {PROTOCOLS.map((entry) => (
               <Tab key={entry.id} title={entry.label} id={entry.id}>
-                <div className="mm-integration__grid">
-                  <dl className="mm-integration__spec">
-                    <div>
-                      <dt>Base URL</dt>
-                      <dd className="mm-mono">{entry.baseUrl}</dd>
-                    </div>
-                    <div>
-                      <dt>Endpoint</dt>
-                      <dd className="mm-mono">{entry.endpoint}</dd>
-                    </div>
-                    <div>
-                      <dt>Thinking depth field</dt>
-                      <dd className="mm-mono">{entry.effortField}</dd>
-                      <span className="mm-integration__spec-hint">{entry.effortLocation}</span>
-                    </div>
-                    <div>
-                      <dt>Thinking comes back as</dt>
-                      <dd>{entry.thinkingField}</dd>
-                    </div>
-                    <div>
-                      <dt>Output limit field</dt>
-                      <dd className="mm-mono">{entry.outputLimitField}</dd>
-                    </div>
-                    <div>
-                      <dt>Note</dt>
-                      <dd>{entry.note}</dd>
-                    </div>
+                <div className='grid grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] items-start gap-6 max-[900px]:grid-cols-1'>
+                  <dl className='m-0 flex flex-col gap-4'>
+                    {[
+                      { term: 'Base URL', value: entry.baseUrl, mono: true },
+                      { term: 'Endpoint', value: entry.endpoint, mono: true },
+                      {
+                        term: 'Thinking depth field',
+                        value: entry.effortField,
+                        mono: true,
+                        hint: entry.effortLocation,
+                      },
+                      { term: 'Thinking comes back as', value: entry.thinkingField },
+                      { term: 'Output limit field', value: entry.outputLimitField, mono: true },
+                      { term: 'Note', value: entry.note },
+                    ].map((row) => (
+                      <div
+                        key={row.term}
+                        className='border-line flex flex-col gap-[0.15rem] border-b pb-3'>
+                        <dt className='text-ink-3 text-xs'>{row.term}</dt>
+                        <dd
+                          className={`text-ink m-0 text-sm ${row.mono ? 'font-mono text-[0.92em] break-all' : ''}`}>
+                          {row.value}
+                        </dd>
+                        {row.hint ? <span className='text-ink-3 text-xs'>{row.hint}</span> : null}
+                      </div>
+                    ))}
                   </dl>
 
-                  <CodeBlock code={REQUEST_EXAMPLES[entry.id]} label="Request" />
+                  <CodeBlock code={REQUEST_EXAMPLES[entry.id]} label='Request' />
                 </div>
               </Tab>
             ))}
@@ -121,17 +126,21 @@ export function Integration() {
         </Reveal>
 
         <Reveal delay={0.08}>
-          <div className="mm-integration__migration">
-            <h3 className="mm-integration__subhead">Migrating from M3</h3>
-            <ol className="mm-integration__steps">
+          <div className='border-line mt-7 border-t pt-6'>
+            <h3 className='font-display text-ink mb-5 text-lg font-normal'>Migrating from M3</h3>
+            <ol className='flex flex-col gap-4'>
               {MIGRATION_STEPS.map((step, index) => (
-                <li key={step.title} className="mm-integration__step">
-                  <span className="mm-integration__step-index mm-num">
+                <li
+                  key={step.title}
+                  className='grid grid-cols-[44px_minmax(0,1fr)] items-start gap-4'>
+                  <span className='font-display text-ink-3 after:bg-line relative pt-[0.1rem] text-sm after:absolute after:top-[0.6rem] after:right-[-0.6rem] after:left-0 after:h-px'>
                     {String(index + 1).padStart(2, '0')}
                   </span>
                   <div>
-                    <h4 className="mm-integration__step-title">{step.title}</h4>
-                    <p className="mm-integration__step-body">{step.body}</p>
+                    <h4 className='font-display text-md text-ink mb-[0.2rem] font-medium'>
+                      {step.title}
+                    </h4>
+                    <p className='text-ink-2 max-w-[68ch] text-sm'>{step.body}</p>
                   </div>
                 </li>
               ))}
@@ -140,20 +149,23 @@ export function Integration() {
         </Reveal>
 
         <Reveal delay={0.12}>
-          <div className="mm-integration__access">
-            <h3 className="mm-integration__subhead">Where it runs</h3>
-            <ul className="mm-integration__access-list">
+          <div className='border-line mt-7 border-t pt-6'>
+            <h3 className='font-display text-ink mb-5 text-lg font-normal'>Where it runs</h3>
+            <ul className='grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-4'>
               {ACCESS_PATHS.map((path) => (
-                <li key={path.id} className="mm-integration__access-item">
-                  <span className="mm-integration__access-kind">{path.kind}</span>
-                  <h4 className="mm-integration__access-name">{path.name}</h4>
-                  <p className="mm-integration__access-detail">{path.detail}</p>
+                <li
+                  key={path.id}
+                  className='border-line bg-surface flex flex-col gap-2 rounded-md border p-5'>
+                  <span className='text-ink-3 text-[10px] tracking-[0.07em] uppercase'>
+                    {path.kind}
+                  </span>
+                  <h4 className='font-display text-md text-ink font-medium'>{path.name}</h4>
+                  <p className='text-ink-2 flex-1 text-sm leading-[1.55]'>{path.detail}</p>
                   <a
-                    className="mm-integration__access-link"
+                    className='text-brand-rose-text hover:text-ink mt-2 self-start text-sm font-medium underline decoration-1 underline-offset-[3px]'
                     href={path.href}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                  >
+                    target='_blank'
+                    rel='noreferrer noopener'>
                     {path.cta}
                   </a>
                 </li>
@@ -162,7 +174,7 @@ export function Integration() {
           </div>
         </Reveal>
 
-        <p className="mm-visually-hidden" aria-live="polite">
+        <p className='sr-only' aria-live='polite'>
           Selected protocol: {active.label}.
         </p>
       </div>

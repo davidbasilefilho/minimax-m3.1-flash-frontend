@@ -47,11 +47,7 @@ export const SPECTRUM_STOPS = { violet: toHex(VIOLET), rose: toHex(ROSE), orange
  * normalisation is stated in the interface so the number is never
  * mistaken for the raw score.
  */
-export function normalisedPosition(
-  score: number,
-  best: number,
-  worst: number,
-): number {
+export function normalisedPosition(score: number, best: number, worst: number): number {
   if (best === worst) return 50;
   const t = (score - worst) / (best - worst);
   return Math.max(0, Math.min(100, t * 100));

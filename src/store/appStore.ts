@@ -12,6 +12,7 @@
  */
 
 import { Store } from '@tanstack/react-store';
+
 import type { Effort } from '../data/model';
 
 export type ThemeName = 'chamber' | 'daylight';
@@ -40,15 +41,19 @@ function readStoredPrefs(): Partial<AppState> {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return {};
-    const parsed = JSON.parse(raw) as Partial<AppState>;
-    return parsed && typeof parsed === 'object' ? parsed : {};
+    const parsed: unknown = JSON.parse(raw);
+    return isRecord(parsed) ? parsed : {};
   } catch {
     return {};
   }
 }
 
+function isRecord(value: unknown): value is Partial<AppState> {
+  return typeof value === 'object' && value !== null;
+}
+
 function prefersReducedMotion(): boolean {
-  if (typeof window === 'undefined' || !window.matchMedia) return false;
+  if (typeof window === 'undefined') return false;
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
@@ -156,7 +161,9 @@ export const actions = {
     appStore.setState((prev) => ({ ...prev, dismissedNotices: [] }));
   },
   setActiveSection(id: string) {
-    appStore.setState((prev) => (prev.activeSection === id ? prev : { ...prev, activeSection: id }));
+    appStore.setState((prev) =>
+      prev.activeSection === id ? prev : { ...prev, activeSection: id },
+    );
   },
   setNotesExpanded(expanded: boolean) {
     appStore.setState((prev) => ({ ...prev, notesExpanded: expanded }));

@@ -1,8 +1,7 @@
-import { useEffect, useId, useRef } from 'react';
 import { motion, useMotionValue, useTransform } from 'motion/react';
+import { useEffect, useId, useRef } from 'react';
 
 import { buildBaseAmplitudes, buildTracePath, liveAmplitudes, TRACE_GEOMETRY } from '../lib/trace';
-import './trace.css';
 
 export type TraceTone = 'signal' | 'reason' | 'throughput' | 'spectrum';
 
@@ -27,10 +26,10 @@ export type TraceProps = {
 };
 
 const TONE_GRADIENTS: Record<TraceTone, [string, string]> = {
-  signal: ['var(--mm-rose)', 'var(--mm-orange)'],
-  reason: ['var(--mm-violet)', 'var(--mm-lilac)'],
-  throughput: ['var(--mm-azure)', 'var(--mm-cyan)'],
-  spectrum: ['var(--mm-violet)', 'var(--mm-orange)'],
+  signal: ['var(--color-brand-rose)', 'var(--color-brand-orange)'],
+  reason: ['var(--color-brand-violet)', 'var(--color-brand-lilac)'],
+  throughput: ['var(--color-brand-azure)', 'var(--color-brand-cyan)'],
+  spectrum: ['var(--color-brand-violet)', 'var(--color-brand-orange)'],
 };
 
 /**
@@ -62,13 +61,18 @@ export function Trace({
   }, [phase]);
 
   useEffect(() => {
-    if (!animate) return;
+    if (!animate) {
+      return () => {};
+    }
 
     let frame = 0;
     let start: number | null = null;
 
     const tick = (timestamp: number) => {
-      if (start === null) start = timestamp;
+      // `??=` would read better, but logical assignment operators are not
+      // supported by the React Compiler yet and would drop this component
+      // out of compilation.
+      start = start ?? timestamp;
       phaseRef.current.set((timestamp - start) / 1000);
       frame = requestAnimationFrame(tick);
     };
@@ -88,38 +92,37 @@ export function Trace({
 
   return (
     <svg
-      className={`mm-trace${className ? ` ${className}` : ''}`}
+      className={`block size-full overflow-visible ${className ?? ''}`}
       viewBox={`0 0 ${TRACE_GEOMETRY.width} ${TRACE_GEOMETRY.height}`}
-      preserveAspectRatio="none"
+      preserveAspectRatio='none'
       role={label ? 'img' : 'presentation'}
       aria-label={label}
       aria-hidden={label ? undefined : true}
-      focusable="false"
-    >
+      focusable='false'>
       <defs>
-        <linearGradient id={gradientRef} x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor={from} />
-          <stop offset="100%" stopColor={to} />
+        <linearGradient id={gradientRef} x1='0' y1='0' x2='1' y2='0'>
+          <stop offset='0%' stopColor={from} />
+          <stop offset='100%' stopColor={to} />
         </linearGradient>
       </defs>
 
       <motion.path
-        className="mm-trace__stroke"
+        className='mm-trace__stroke'
         d={path}
         stroke={`url(#${gradientRef})`}
         strokeWidth={strokeWidth}
-        vectorEffect="non-scaling-stroke"
-        fill="none"
+        vectorEffect='non-scaling-stroke'
+        fill='none'
       />
 
       {pulse ? (
         <motion.path
-          className="mm-trace__pulse"
+          className='mm-trace__pulse'
           d={path}
           stroke={`url(#${gradientRef})`}
           strokeWidth={strokeWidth * 1.6}
-          vectorEffect="non-scaling-stroke"
-          fill="none"
+          vectorEffect='non-scaling-stroke'
+          fill='none'
         />
       ) : null}
     </svg>

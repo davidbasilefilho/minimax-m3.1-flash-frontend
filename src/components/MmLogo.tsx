@@ -1,5 +1,3 @@
-import './mmLogo.css';
-
 export type MmLogoProps = {
   /** Rendered height of the lockup. Width follows the official aspect ratio. */
   height?: number;
@@ -22,14 +20,16 @@ export type MmLogoProps = {
  */
 export function MmLogo({ height = 30, className }: MmLogoProps) {
   return (
-    <span className={`mm-logo${className ? ` ${className}` : ''}`} style={{ height }}>
+    <span
+      className={`data-[theme=daylight]:border-line inline-flex shrink-0 items-center rounded-[10px] bg-white px-3 py-2 leading-none data-[theme=daylight]:border ${className ?? ''}`}
+      style={{ height }}>
       <img
-        src="/brand/minimax-horizontal-brand-black.webp"
-        alt="MiniMax"
+        src='/brand/minimax-horizontal-brand-black.webp'
+        alt='MiniMax'
         width={349}
         height={128}
-        style={{ height: '100%', width: 'auto' }}
-        decoding="async"
+        className='block h-full w-auto object-contain'
+        decoding='async'
       />
     </span>
   );

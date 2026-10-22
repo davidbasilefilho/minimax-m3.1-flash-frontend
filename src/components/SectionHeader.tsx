@@ -1,7 +1,5 @@
-import type { ReactNode } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
-
-import './sectionHeader.css';
+import type { ReactNode } from 'react';
 
 export type SectionHeaderProps = {
   /** Two-digit index, as on an instrument panel. */
@@ -23,13 +21,17 @@ export function SectionHeader({ index, title, blurb, aside, id }: SectionHeaderP
   const reduce = useReducedMotion();
 
   return (
-    <header className="mm-section-header">
-      <div className="mm-section-header__main">
-        <span className="mm-section-header__index mm-num" aria-hidden="true">
+    <header className='border-line mb-7 flex items-end justify-between gap-6 border-b pb-5 max-[720px]:flex-col max-[720px]:items-start max-[720px]:gap-4'>
+      <div className='flex min-w-0 items-start gap-5'>
+        <span
+          className='font-display text-ink-3 after:bg-line relative shrink-0 pt-[0.45rem] text-xs font-medium tracking-[0.08em] after:absolute after:top-[1.05rem] after:right-[-1rem] after:left-0 after:h-px max-[720px]:after:hidden'
+          aria-hidden='true'>
           {index}
         </span>
-        <div className="mm-section-header__text">
-          <h2 id={id} className="mm-section-header__title mm-display">
+        <div className='min-w-0'>
+          <h2
+            id={id}
+            className='font-display text-ink mb-3 text-[clamp(1.75rem,3.6vw,2.6rem)] leading-tight font-light tracking-[-0.03em]'>
             {reduce ? (
               title
             ) : (
@@ -38,16 +40,15 @@ export function SectionHeader({ index, title, blurb, aside, id }: SectionHeaderP
                 whileInView={{ clipPath: 'inset(0 0% 0 0)' }}
                 viewport={{ once: true, amount: 0.9 }}
                 transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
-                style={{ display: 'inline-block' }}
-              >
+                style={{ display: 'inline-block' }}>
                 {title}
               </motion.span>
             )}
           </h2>
-          {blurb ? <p className="mm-section-header__blurb mm-measure">{blurb}</p> : null}
+          {blurb ? <p className='text-md text-ink-2 max-w-[68ch]'>{blurb}</p> : null}
         </div>
       </div>
-      {aside ? <div className="mm-section-header__aside">{aside}</div> : null}
+      {aside ? <div className='shrink-0'>{aside}</div> : null}
     </header>
   );
 }

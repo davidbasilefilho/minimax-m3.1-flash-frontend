@@ -10,8 +10,8 @@
  * https://www.minimax.io/brand-vi
  */
 
-import { createDarkTheme, createLightTheme } from 'baseui/themes';
 import type { Theme } from 'baseui/styles';
+import { createDarkTheme, createLightTheme } from 'baseui/themes';
 
 /* ── The six brand hues, plus the two supporting brand colours ─────────── */
 
@@ -68,27 +68,42 @@ const BORDERS = {
 } as const;
 
 /**
+ * Narrow a string key to a key of the typography token map.
+ *
+ * `Theme['typography']` is a fixed interface of roughly sixty named tokens,
+ * so a generic rewrite has to narrow `string` back into that key union.
+ * A type guard does it without an assertion.
+ */
+function isTypographyKey(
+  key: string,
+  tokens: Theme['typography'],
+): key is keyof Theme['typography'] {
+  return key in tokens;
+}
+
+/**
  * Re-point every typography token at the brand families.
+ *
  * Base Web bakes `fontFamily` into each token at build time, so overriding
  * `fonts` alone is not enough — the tokens have to be rewritten.
  */
 function withBrandFonts<T extends Theme>(theme: T): T {
   const typography = { ...theme.typography };
 
-  for (const key of Object.keys(typography) as Array<keyof typeof typography>) {
-    const token = typography[key];
-    if (!token || typeof token !== 'object') continue;
+  for (const key of Object.keys(typography)) {
+    if (!isTypographyKey(key, typography)) continue;
 
+    const token = typography[key];
     const family = key.startsWith('Mono')
       ? FONTS.monoFontFamily
       : key.startsWith('Heading') || key.startsWith('Display')
         ? FONTS.secondaryFontFamily
         : FONTS.primaryFontFamily;
 
-    typography[key] = { ...token, fontFamily: family } as never;
+    typography[key] = { ...token, fontFamily: family };
   }
 
-  return { ...theme, typography, fonts: FONTS } as T;
+  return { ...theme, typography, fonts: FONTS };
 }
 
 /* ── chamber ───────────────────────────────────────────────────────────── */

@@ -30,7 +30,7 @@ const MARK_PROFILE = [0.34, 0.58, 0.86, 1, 0.92, 0.7, 0.46] as const;
  * identical between renders and between reloads.
  */
 function seeded(seed: number): () => number {
-  let state = (seed >>> 0) || 0x9e3779b9;
+  let state = seed >>> 0 || 0x9e3779b9;
   return () => {
     state ^= state << 13;
     state >>>= 0;
@@ -67,11 +67,7 @@ export function buildBaseAmplitudes(bars: number, seed: number): number[] {
  * Live amplitudes for a given phase. Two travelling waves with different
  * speeds beat against each other so the motion never visibly repeats.
  */
-export function liveAmplitudes(
-  base: number[],
-  phase: number,
-  intensity: number,
-): number[] {
+export function liveAmplitudes(base: number[], phase: number, intensity: number): number[] {
   const speed = 1.35;
   return base.map((value, index) => {
     const primary = Math.sin(phase * speed + index * 0.42);
@@ -126,8 +122,10 @@ export function buildTracePath(
     const nextLevel = i + 1 < count - 1 ? connectors[i + 1] : lastFree;
 
     parts.push(`L ${x.toFixed(2)} ${y.toFixed(2)}`);
-    parts.push(`A ${radius.toFixed(2)} ${radius.toFixed(2)} 0 0 ${sweep} ${nextX.toFixed(2)} ${y.toFixed(2)}`);
-    parts.push(`L ${nextX.toFixed(2)} ${nextLevel.toFixed(2)}`);
+    parts.push(
+      `A ${radius.toFixed(2)} ${radius.toFixed(2)} 0 0 ${sweep} ${nextX.toFixed(2)} ${y.toFixed(2)}`,
+      `L ${nextX.toFixed(2)} ${nextLevel.toFixed(2)}`,
+    );
   }
 
   return parts.join(' ');

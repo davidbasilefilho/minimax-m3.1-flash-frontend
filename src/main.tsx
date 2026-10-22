@@ -4,7 +4,10 @@ import { Client as Styletron } from 'styletron-engine-atomic';
 import { Provider as StyletronProvider } from 'styletron-react';
 
 import { App } from './App';
-import './styles/base.css';
+// The stylesheet is imported for its side effect — it carries the Tailwind
+// entry point and the design tokens.
+// oxlint-disable-next-line import/no-unassigned-import
+import './styles/global.css';
 
 const styletron = new Styletron();
 

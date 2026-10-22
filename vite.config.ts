@@ -1,5 +1,6 @@
-import { defineConfig } from 'vite';
+import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -12,8 +13,14 @@ export default defineConfig({
     react({
       compiler: {
         reportDiagnostics: true,
+        // The compiler's own bail-out diagnostics are the real safety net
+        // for a silent optimisation skip. `critical_errors` fails the build
+        // on an internal compiler error without failing on a library the
+        // compiler deliberately declines to optimise.
+        panicThreshold: 'critical_errors',
       },
     }),
+    tailwindcss(),
   ],
   build: {
     target: 'es2022',
@@ -26,8 +33,16 @@ export default defineConfig({
         codeSplitting: {
           groups: [
             { name: 'baseui', test: /node_modules[\\/]baseui/, debugName: 'baseui' },
-            { name: 'motion', test: /node_modules[\\/](motion|framer-motion)/, debugName: 'motion' },
-            { name: 'react', test: /node_modules[\\/](react|react-dom|scheduler)/, debugName: 'react' },
+            {
+              name: 'motion',
+              test: /node_modules[\\/](motion|framer-motion)/,
+              debugName: 'motion',
+            },
+            {
+              name: 'react',
+              test: /node_modules[\\/](react|react-dom|scheduler)/,
+              debugName: 'react',
+            },
             { name: 'tanstack', test: /node_modules[\\/]@tanstack/, debugName: 'tanstack' },
           ],
         },

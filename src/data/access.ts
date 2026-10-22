@@ -29,8 +29,7 @@ export const PROTOCOLS: readonly Protocol[] = [
     effortLocation: 'Top-level output_config object',
     thinkingField: 'thinking content block',
     outputLimitField: 'max_tokens',
-    note:
-      'Supports thinking blocks, interleaved thinking and streaming. This is the default path.',
+    note: 'Supports thinking blocks, interleaved thinking and streaming. This is the default path.',
   },
   {
     id: 'openai',
@@ -42,8 +41,7 @@ export const PROTOCOLS: readonly Protocol[] = [
     effortLocation: 'Top-level request body',
     thinkingField: 'reasoning_content field',
     outputLimitField: 'max_tokens / max_completion_tokens',
-    note:
-      'Already wired up to the OpenAI SDK. Thinking is always returned on reasoning_content while content holds only the final answer.',
+    note: 'Already wired up to the OpenAI SDK. Thinking is always returned on reasoning_content while content holds only the final answer.',
   },
 ] as const;
 
@@ -122,22 +120,18 @@ export const ACCESS_PATHS: readonly AccessPath[] = [
 export const MIGRATION_STEPS = [
   {
     title: 'Stop sending thinking.type',
-    body:
-      'thinking: {"type": "disabled"} and effort: "none" both return HTTP 400 on M3.1 Flash. Remove the field rather than toggling it.',
+    body: 'thinking: {"type": "disabled"} and effort: "none" both return HTTP 400 on M3.1 Flash. Remove the field rather than toggling it.',
   },
   {
     title: 'Pick a level instead',
-    body:
-      'effort accepts low, medium, high, xhigh and max. Omitting it defaults to max. Set it explicitly if you want predictable latency and cost.',
+    body: 'effort accepts low, medium, high, xhigh and max. Omitting it defaults to max. Set it explicitly if you want predictable latency and cost.',
   },
   {
     title: 'Read thinking from its own field',
-    body:
-      'On the Anthropic-compatible path a thinking content block arrives before the text block. On the OpenAI-compatible path it arrives on reasoning_content. Stop parsing <think> out of content.',
+    body: 'On the Anthropic-compatible path a thinking content block arrives before the text block. On the OpenAI-compatible path it arrives on reasoning_content. Stop parsing <think> out of content.',
   },
   {
     title: 'Stop relying on disabled-reasoning latency',
-    body:
-      'Always-on reasoning sets a token and latency floor even for a trivial call. If a request used to feel instant, lower the effort level to get some of that back.',
+    body: 'Always-on reasoning sets a token and latency floor even for a trivial call. If a request used to feel instant, lower the effort level to get some of that back.',
   },
 ] as const;

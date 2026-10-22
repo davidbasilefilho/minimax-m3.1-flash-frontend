@@ -1,5 +1,3 @@
-import './readout.css';
-
 export type ReadoutProps = {
   label: string;
   value: string;
@@ -12,11 +10,17 @@ export type ReadoutProps = {
   tone?: 'ink' | 'signal' | 'reason' | 'throughput';
 };
 
+const SIZE_CLASS = {
+  sm: 'text-lg',
+  md: 'text-2xl',
+  lg: 'text-[clamp(2.4rem,5.5vw,3.4rem)]',
+} as const;
+
 const TONE_CLASS = {
-  ink: '',
-  signal: 'mm-readout--signal',
-  reason: 'mm-readout--reason',
-  throughput: 'mm-readout--throughput',
+  ink: 'text-ink',
+  signal: 'text-brand-rose-text',
+  reason: 'text-brand-violet-text',
+  throughput: 'text-brand-cyan-text',
 } as const;
 
 /**
@@ -35,29 +39,35 @@ export function Readout({
   tone = 'ink',
 }: ReadoutProps) {
   return (
-    <div className={`mm-readout mm-readout--${size} ${TONE_CLASS[tone]}`}>
-      <div className="mm-readout__head">
-        <span className="mm-readout__label">{label}</span>
+    <div className='flex min-w-0 flex-col gap-[0.35rem]'>
+      <div className='flex flex-wrap items-center gap-2'>
+        <span className='text-ink-3 text-xs tracking-[0.01em]'>{label}</span>
         {source ? (
           <span
-            className={`mm-readout__source mm-readout__source--${source}`}
+            className={`rounded-pill cursor-help border px-[0.4rem] py-[0.1rem] text-[10px] tracking-[0.06em] whitespace-nowrap ${
+              source === 'measured'
+                ? 'border-brand-cyan/46 text-brand-cyan-text'
+                : 'border-brand-violet/46 text-brand-violet-text'
+            }`}
             title={
               source === 'vendor'
                 ? 'Reported by MiniMax'
                 : 'Measured independently by Artificial Analysis'
-            }
-          >
+            }>
             {source === 'vendor' ? 'vendor' : 'measured'}
           </span>
         ) : null}
       </div>
 
-      <p className="mm-readout__value mm-num">
+      <p
+        className={`font-display flex flex-wrap items-baseline gap-[0.35rem] leading-none font-light tracking-[-0.02em] tabular-nums ${SIZE_CLASS[size]} ${TONE_CLASS[tone]}`}>
         {value}
-        {unit ? <span className="mm-readout__unit">{unit}</span> : null}
+        {unit ? (
+          <span className='font-body text-ink-3 text-xs font-normal tracking-[0.02em]'>{unit}</span>
+        ) : null}
       </p>
 
-      {note ? <p className="mm-readout__note">{note}</p> : null}
+      {note ? <p className='text-ink-2 max-w-[34ch] text-sm leading-[1.5]'>{note}</p> : null}
     </div>
   );
 }

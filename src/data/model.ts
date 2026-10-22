@@ -73,8 +73,7 @@ export const MODEL = {
   status: 'Generally available',
   released: '2026-10-19',
   weights: 'Released 2026-10-23 (announced); licence terms not yet published.',
-  tagline:
-    'Frontier multimodal coding model with 1M context window and tunable thinking depth.',
+  tagline: 'Frontier multimodal coding model with 1M context window and tunable thinking depth.',
   slogan: 'Intelligence with Everyone',
   summary:
     'A 428B-parameter mixture-of-experts model with roughly 23B active parameters. Reasoning is always on and cannot be switched off — depth is tuned with five effort levels instead. It reads text, images and video, writes text, and holds a one-million-token context window.',
@@ -96,8 +95,7 @@ export const MODEL = {
   reasoning: {
     alwaysOn: true,
     defaultEffort: 'max' as Effort,
-    disableAttempt:
-      'model "MiniMax-M3.1-Flash" requires adaptive thinking',
+    disableAttempt: 'model "MiniMax-M3.1-Flash" requires adaptive thinking',
     disableStatus: 400,
   },
   predecessor: {
