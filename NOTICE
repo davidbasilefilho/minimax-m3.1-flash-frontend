@@ -56,11 +56,14 @@ Motion / Framer Motion .... MIT License, Motion Division
 Lenis ..................... MIT License, Studio Freight
 Vite ...................... MIT License, VoidZero Inc. and contributors
 Rolldown / Oxc ............ MIT License, VoidZero Inc. and contributors
+Tailwind CSS .............. MIT License, Tailwind Labs, Inc.
+oxlint ................... MIT License, Oxc Project
+oxlint-tsgolint .......... MIT License, typescript-eslint contributors
 Nitro ..................... MIT License, Nitro contributors
 Wrangler ................. MIT License, Cloudflare, Inc.
 React Compiler ........... MIT License, Meta Platforms, Inc. and contributors
 TypeScript ............... Apache License 2.0, Microsoft Corporation
-ESLint ................... MIT License, ESLint
+Bun ...................... MIT License, Oven, Inc.
 
 --------------------------------------------------------------------------------
 Content

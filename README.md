@@ -25,11 +25,11 @@ chart are all the same mark at a different scale.
 
 Four rules come straight from the mark:
 
-| Rule | Consequence |
-| --- | --- |
-| One stroke weight | A 1px hairline for structure, a 2px signal weight for anything live. Nothing between. |
-| Rounded, always | Round caps, round elbows, pill controls, 14px panels. |
-| Continuous, not separated | Sections are joined by a drawn trace, not by empty space. |
+| Rule                      | Consequence                                                                                   |
+| ------------------------- | --------------------------------------------------------------------------------------------- |
+| One stroke weight         | A 1px hairline for structure, a 2px signal weight for anything live. Nothing between.         |
+| Rounded, always           | Round caps, round elbows, pill controls, 14px panels.                                         |
+| Continuous, not separated | Sections are joined by a drawn trace, not by empty space.                                     |
 | The gradient carries data | A score's colour is its position on the brand scale. The gradient is a reading, never a wash. |
 
 **Colour** is the eight brand hues verbatim — rose `#FF3763`, coral `#FF6452`,
@@ -44,27 +44,82 @@ for body and interface, Libre Baskerville for the editorial voice.
 
 ## Stack
 
-| | |
-| --- | --- |
-| Build | Vite 8 · TypeScript 5.9 |
-| UI | React 19.3 with the **React Compiler** enabled |
-| Components | **Base Web 18** (Uber) with a custom Styletron theme built on the brand tokens |
-| State | **@tanstack/react-store** — theme, motion, effort, calculator, notices |
-| Data | **@tanstack/react-table** v9 for the benchmark matrix · **@tanstack/react-virtual** for the field-notes log |
-| Motion | **motion** 14 · **lenis** for smooth scrolling |
-| Deploy | **Nitro 3** — one build, any platform. Cloudflare Workers by default. |
+|            |                                                                                                             |
+| ---------- | ----------------------------------------------------------------------------------------------------------- |
+| Build      | Vite 8 · TypeScript 5.9                                                                                     |
+| UI         | React 19.3 with the **React Compiler** enabled                                                              |
+| Styles     | **Tailwind CSS 4** — CSS-first, one `@theme` block is the whole design system                               |
+| Components | **Base Web 18** (Uber) with a custom Styletron theme built on the brand tokens                              |
+| State      | **@tanstack/react-store** — theme, motion, effort, calculator, notices                                      |
+| Data       | **@tanstack/react-table** v9 for the benchmark matrix · **@tanstack/react-virtual** for the field-notes log |
+| Motion     | **motion** 14 · **lenis** for smooth scrolling                                                              |
+| Lint       | **oxlint 1.89** with **oxlint-tsgolint** — type-aware and type-checked                                      |
+| Format     | **bun fmt** — configured in `bunfig.toml`, no Prettier and no oxfmt                                         |
+| Deploy     | **Nitro 3** — one build, any platform. Cloudflare Workers by default.                                       |
+
+### The design system is the stylesheet
+
+Tailwind v4 is CSS-first, so the whole SIGNAL token system lives in one
+`@theme` block in `src/styles/global.css`. Every token is also a utility:
+
+| Token                | Utility                            |
+| -------------------- | ---------------------------------- |
+| `--color-ink`        | `text-ink`, `bg-ink`, `border-ink` |
+| `--color-brand-rose` | `text-brand-rose`, `bg-brand-rose` |
+| `--font-display`     | `font-display`                     |
+| `--text-2xl`         | `text-2xl`                         |
+| `--radius-md`        | `rounded-md`                       |
+| `--ease-signal`      | `ease-signal`                      |
+| `--gradient-signal`  | `bg-signal`                        |
+| `--container-shell`  | `max-w-shell`                      |
+| `--spacing-gutter`   | `px-gutter`                        |
+
+The two themes are the same token names with different values, so switching a
+theme is one attribute on `<html>` and every utility follows. There are no
+per-component stylesheets: the only raw CSS left is the handful of things
+utilities cannot express — the trace stroke, the graticule, the focus ring —
+plus the four `@utility` gradient classes, because Tailwind v4 has no
+`--gradient-*` namespace of its own.
 
 ### React Compiler
 
-The compiler is on via `@vitejs/plugin-react`'s `compiler` option, and the
-`eslint-plugin-react-hooks` v7 compiler diagnostics are promoted to **error** so a
-silent compiler bail fails the build rather than shipping a re-render bug.
+The compiler is on via `@vitejs/plugin-react`'s `compiler` option, with
+`panicThreshold: 'critical_errors'` so an internal compiler error fails the build
+rather than silently dropping a component out of compilation.
 
 There is no hand-written `useMemo`, `useCallback` or `React.memo` in the codebase.
 The one exception is documented in `src/components/VirtualNotes.tsx`: TanStack
 Virtual's `useVirtualizer()` returns functions that cannot be memoised safely, so
 the compiler skips that component. Keeping the call inside one small component
 scopes the skip to exactly that component.
+
+### Linting
+
+`oxlint` with `oxlint-tsgolint` provides the React Compiler diagnostics and 59 of
+the 61 type-aware `typescript-eslint` rules, at roughly 10–20× the speed of
+ESLint. The configuration is `.oxlintrc.json`:
+
+- `options.typeAware` and `options.typeCheck` are both on.
+- The React Compiler diagnostics live under the `react/` namespace
+  (`react/unsupported-syntax`, `react/invariant`, `react/immutability`,
+  `react/exhaustive-deps`, …) and are promoted to **error**, so a silent compiler
+  bail fails the build.
+- Type-aware rules that catch real bugs are on: `typescript/no-floating-promises`,
+  `typescript/no-misused-promises`, `typescript/await-thenable`,
+  `typescript/no-unnecessary-condition`, `typescript/only-throw-error` and more.
+- Accessibility is enforced by the `jsx-a11y` plugin.
+- Rules that are obsolete for this stack — `react/react-in-jsx-scope` (dead since
+  React 17), the `react-perf` family (pre-compiler heuristics) and
+  `unicorn/no-null` (`null` is a domain value here) — are explicitly off, with
+  the reason recorded in the config.
+
+### Formatting
+
+`bun fmt` is the only formatter. `bunfig.toml` holds the settings, including
+`bracketSameLine`, `sortImports`, `sortPackageJson` and `sortTailwindcss`, so JSX
+closes flush, imports and package keys are sorted, and Tailwind class lists are
+ordered. There is no Prettier, no oxfmt and no editor-specific config to keep in
+sync.
 
 ---
 
@@ -75,16 +130,25 @@ bun install
 bun run dev          # Vite dev server on http://localhost:5173
 ```
 
-| Script | What it does |
-| --- | --- |
-| `bun run dev` | Vite dev server with HMR |
-| `bun run build:web` | Static SPA build into `dist/` |
-| `bun run build` | SPA build + Nitro build into `.output/` |
-| `bun run preview` | Preview the Vite build |
-| `bun run preview:worker` | Preview the Cloudflare Worker with `wrangler dev` |
-| `bun run deploy` | Build and deploy to Cloudflare Workers |
-| `bun run typecheck` | `tsc -b` across app, server and config |
-| `bun run lint` | ESLint with the compiler diagnostics at error level |
+| Script              | What it does                                     |
+| ------------------- | ------------------------------------------------ |
+| `bun run dev`       | Vite dev server with HMR                         |
+| `bun run build`     | SPA build + Nitro build into `.output/`          |
+| `bun run preview`   | Preview the Vite build                           |
+| `bun run deploy`    | Build and deploy to Cloudflare Workers           |
+| `bun run lint`      | oxlint with type-aware linting and type checking |
+| `bun run fmt`       | `bun fmt` over the whole repository              |
+| `bun run typecheck` | `tsc -b` across app, server and config           |
+| `bun run check`     | Format check, lint and typecheck in one go       |
+
+### Configuration
+
+| File                    | What it holds                                   |
+| ----------------------- | ----------------------------------------------- |
+| `bunfig.toml`           | The `[fmt]` section — the formatter's settings  |
+| `.oxlintrc.json`        | Plugins, categories, rules, type-aware options  |
+| `src/styles/global.css` | The Tailwind `@theme` block — the design system |
+| `nitro.config.ts`       | The deployment preset and cache headers         |
 
 ### URL preferences
 
@@ -140,18 +204,18 @@ something to ping.
 
 ## What is on the page
 
-| Section | Contents |
-| --- | --- |
-| 00 Overview | The live trace, driven by the selected thinking depth |
-| 01 Notices | Nine limitations, provenance caveats and legal constraints |
-| 02 Vitals | 428B / 23B mixture of experts, 1M context, and a field of 428 marks with 23 lit |
-| 03 Thinking depth | The five `effort` levels, and the score curves they produce |
-| 04 Benchmarks | Fifteen benchmarks × seven models, sortable, with the published harness for each |
-| 05 Cost | A live calculator over the published flat rates |
-| 06 Throughput | Vendor claims and independent measurements, side by side |
-| 07 Integration | Both API protocols, the request bodies, and the M3 migration steps |
-| 08 Field notes | Thirty-eight dated events, windowed |
-| 09 Design system | The tokens, type, motion and component rules, shown on themselves |
+| Section           | Contents                                                                         |
+| ----------------- | -------------------------------------------------------------------------------- |
+| 00 Overview       | The live trace, driven by the selected thinking depth                            |
+| 01 Notices        | Nine limitations, provenance caveats and legal constraints                       |
+| 02 Vitals         | 428B / 23B mixture of experts, 1M context, and a field of 428 marks with 23 lit  |
+| 03 Thinking depth | The five `effort` levels, and the score curves they produce                      |
+| 04 Benchmarks     | Fifteen benchmarks × seven models, sortable, with the published harness for each |
+| 05 Cost           | A live calculator over the published flat rates                                  |
+| 06 Throughput     | Vendor claims and independent measurements, side by side                         |
+| 07 Integration    | Both API protocols, the request bodies, and the M3 migration steps               |
+| 08 Field notes    | Thirty-eight dated events, windowed                                              |
+| 09 Design system  | The tokens, type, motion and component rules, shown on themselves                |
 
 ---
 
@@ -193,4 +257,3 @@ rather than ignored, so the repository is self-contained:
 `.claude/skills/*` are links into `.agents/skills/*` on the author's machine. Git
 records the resolved content rather than the link, so a clone gets real files on
 every platform and no absolute paths to break.
-
