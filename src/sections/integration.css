@@ -1,0 +1,207 @@
+.mm-integration__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: var(--mm-space-6);
+  align-items: start;
+}
+
+.mm-integration__spec {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mm-space-4);
+  margin: 0;
+}
+
+.mm-integration__spec > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding-bottom: var(--mm-space-3);
+  border-bottom: 1px solid var(--mm-line);
+}
+
+.mm-integration__spec dt {
+  font-size: var(--mm-text-xs);
+  color: var(--mm-ink-3);
+}
+
+.mm-integration__spec dd {
+  margin: 0;
+  color: var(--mm-ink);
+  font-size: var(--mm-text-sm);
+}
+
+.mm-integration__spec-hint {
+  font-size: var(--mm-text-xs);
+  color: var(--mm-ink-3);
+}
+
+.mm-mono {
+  font-family: var(--mm-font-mono);
+  font-size: 0.92em;
+  word-break: break-all;
+}
+
+.mm-code {
+  border: 1px solid var(--mm-line);
+  border-radius: var(--mm-radius-md);
+  background: var(--mm-canvas-deep);
+  overflow: hidden;
+}
+
+.mm-code__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--mm-space-3);
+  padding: var(--mm-space-2) var(--mm-space-3) var(--mm-space-2) var(--mm-space-4);
+  border-bottom: 1px solid var(--mm-line);
+  background: var(--mm-surface);
+}
+
+.mm-code__label {
+  font-size: var(--mm-text-xs);
+  color: var(--mm-ink-3);
+}
+
+.mm-code__copy {
+  font-size: var(--mm-text-xs);
+  color: var(--mm-ink-2);
+  background: var(--mm-surface-2);
+  border: 1px solid var(--mm-line);
+  border-radius: var(--mm-radius-pill);
+  padding: 0.2rem 0.7rem;
+  cursor: pointer;
+  transition: color var(--mm-dur-1) var(--mm-ease-out-expo);
+}
+
+.mm-code__copy:hover {
+  color: var(--mm-ink);
+}
+
+.mm-code__body {
+  margin: 0;
+  padding: var(--mm-space-4);
+  overflow-x: auto;
+  font-family: var(--mm-font-mono);
+  font-size: var(--mm-text-sm);
+  line-height: 1.65;
+  color: var(--mm-ink-2);
+}
+
+.mm-integration__migration,
+.mm-integration__access {
+  margin-top: var(--mm-space-7);
+  padding-top: var(--mm-space-6);
+  border-top: 1px solid var(--mm-line);
+}
+
+.mm-integration__subhead {
+  font-family: var(--mm-font-display);
+  font-size: var(--mm-text-lg);
+  font-weight: 400;
+  color: var(--mm-ink);
+  margin-bottom: var(--mm-space-5);
+}
+
+.mm-integration__steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mm-space-4);
+  counter-reset: step;
+}
+
+.mm-integration__step {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: var(--mm-space-4);
+  align-items: start;
+}
+
+.mm-integration__step-index {
+  font-size: var(--mm-text-sm);
+  color: var(--mm-ink-3);
+  padding-top: 0.1rem;
+  position: relative;
+}
+
+.mm-integration__step-index::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: -0.6rem;
+  top: 0.6rem;
+  height: 1px;
+  background: var(--mm-line);
+}
+
+.mm-integration__step-title {
+  font-family: var(--mm-font-display);
+  font-size: var(--mm-text-md);
+  font-weight: 500;
+  color: var(--mm-ink);
+  margin-bottom: 0.2rem;
+}
+
+.mm-integration__step-body {
+  color: var(--mm-ink-2);
+  font-size: var(--mm-text-sm);
+  max-width: 68ch;
+}
+
+.mm-integration__access-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--mm-space-4);
+}
+
+.mm-integration__access-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mm-space-2);
+  border: 1px solid var(--mm-line);
+  border-radius: var(--mm-radius-md);
+  background: var(--mm-surface);
+  padding: var(--mm-space-5);
+}
+
+.mm-integration__access-kind {
+  font-size: 10px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--mm-ink-3);
+}
+
+.mm-integration__access-name {
+  font-family: var(--mm-font-display);
+  font-size: var(--mm-text-md);
+  font-weight: 500;
+  color: var(--mm-ink);
+}
+
+.mm-integration__access-detail {
+  font-size: var(--mm-text-sm);
+  color: var(--mm-ink-2);
+  line-height: 1.55;
+  flex: 1 1 auto;
+}
+
+.mm-integration__access-link {
+  margin-top: var(--mm-space-2);
+  color: var(--mm-rose-text);
+  font-size: var(--mm-text-sm);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  align-self: flex-start;
+}
+
+.mm-integration__access-link:hover {
+  color: var(--mm-ink);
+}
+
+@media (max-width: 900px) {
+  .mm-integration__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

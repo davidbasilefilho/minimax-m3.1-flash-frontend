@@ -1,0 +1,72 @@
+SIGNAL — MiniMax M3.1 Flash
+Copyright 2026 David Basile Filho
+
+This product includes software developed as an independent, unofficial
+demonstration. It is not affiliated with, endorsed by, or operated by MiniMax.
+
+--------------------------------------------------------------------------------
+Brand assets
+--------------------------------------------------------------------------------
+
+The following files in `public/brand/` are the property of their respective rights
+holders and are redistributed here for identification purposes only, in accordance
+with the MiniMax Brand Book (https://www.minimax.io/brand-vi):
+
+  minimax-horizontal-brand-black.webp
+  minimax-horizontal-brand-color.webp
+  minimax-symbol-color.webp
+  minimax-brand-system.webp
+  minimax-slogan.webp
+  minimax-vitality-1.webp ... minimax-vitality-4.webp
+  minimax-vitality-hero.webp
+  minimax-illustration-1.webp ... minimax-illustration-5.webp
+  minimax-typography-1.webp ... minimax-typography-3.webp
+
+Brand assets may not be altered, distorted, separated or redesigned. They are used
+here unmodified, without filters, recolouring or shadows, on surfaces with
+sufficient contrast.
+
+For permission to use these assets, contact partnercomms@minimaxai.com.
+For legal inquiries, contact MiniMax.Design@minimaxai.com.
+
+The MiniMax name, wordmark, symbol, slogan and brand imagery are trademarks of
+MiniMax. All other brand names, product names and logos are the property of their
+respective owners.
+
+--------------------------------------------------------------------------------
+Brand typography
+--------------------------------------------------------------------------------
+
+The web fonts in `public/fonts/` are the brand-specified families, self-hosted as
+subsetted WOFF2 files:
+
+  Outfit              — SIL Open Font License 1.1
+  DM Sans             — SIL Open Font License 1.1
+  Libre Baskerville   — SIL Open Font License 1.1
+
+--------------------------------------------------------------------------------
+Third-party software
+--------------------------------------------------------------------------------
+
+Base Web (baseui) ......... MIT License, Uber Technologies
+Styletron ................ MIT License, Uber Technologies
+React, React DOM .......... MIT License, Meta Platforms, Inc.
+TanStack Store/Table/ ..... MIT License, Tanner Linsley
+Motion / Framer Motion .... MIT License, Motion Division
+Lenis ..................... MIT License, Studio Freight
+Vite ...................... MIT License, VoidZero Inc. and contributors
+Rolldown / Oxc ............ MIT License, VoidZero Inc. and contributors
+Nitro ..................... MIT License, Nitro contributors
+Wrangler ................. MIT License, Cloudflare, Inc.
+React Compiler ........... MIT License, Meta Platforms, Inc. and contributors
+TypeScript ............... Apache License 2.0, Microsoft Corporation
+ESLint ................... MIT License, ESLint
+
+--------------------------------------------------------------------------------
+Content
+--------------------------------------------------------------------------------
+
+All model specifications, benchmark scores, pricing and API details in `src/data/`
+are transcribed from publicly published MiniMax and Artificial Analysis
+documentation, as cited in the README and on the page itself. Benchmark scores are
+vendor reported.

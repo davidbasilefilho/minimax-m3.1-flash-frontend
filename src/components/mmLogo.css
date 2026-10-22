@@ -1,0 +1,27 @@
+/*
+ * The official MiniMax lockup on a solid plate.
+ *
+ * The brand asset is never altered. The plate exists because the wordmark is
+ * black and the dark surface needs contrast — and because a white label plate
+ * is exactly what an instrument panel has.
+ */
+
+.mm-logo {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  background: #ffffff;
+  border-radius: 10px;
+  line-height: 0;
+  flex: none;
+}
+
+[data-theme='daylight'] .mm-logo {
+  border: 1px solid var(--mm-line);
+  padding: calc(0.5rem - 1px) calc(0.75rem - 1px);
+}
+
+.mm-logo img {
+  display: block;
+  object-fit: contain;
+}

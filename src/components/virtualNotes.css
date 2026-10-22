@@ -1,0 +1,93 @@
+/*
+ * The windowed field-notes log.
+ *
+ * The styles live here rather than in the section because the list is a
+ * self-contained component: the scroll container, the absolutely positioned
+ * entries and the kind badges all belong to it.
+ */
+
+.mm-notes__scroll {
+  height: 460px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--mm-line);
+  border-radius: var(--mm-radius-md);
+  background: var(--mm-surface);
+  padding: var(--mm-space-4) var(--mm-space-5);
+}
+
+.mm-notes__scroll.is-expanded {
+  height: 760px;
+}
+
+.mm-notes__spacer {
+  position: relative;
+  width: 100%;
+}
+
+.mm-notes__entry {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: var(--mm-space-4) 0;
+  border-bottom: 1px solid var(--mm-line);
+}
+
+.mm-notes__entry-head {
+  display: flex;
+  align-items: center;
+  gap: var(--mm-space-3);
+  margin-bottom: 0.35rem;
+}
+
+.mm-notes__date {
+  font-size: var(--mm-text-xs);
+  color: var(--mm-ink-3);
+  letter-spacing: 0.02em;
+}
+
+.mm-notes__kind {
+  font-size: 9px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--mm-ink-3);
+  border: 1px solid var(--mm-line-strong);
+  border-radius: var(--mm-radius-pill);
+  padding: 0.05rem 0.4rem;
+}
+
+.mm-notes__kind--release {
+  color: var(--mm-rose-text);
+  border-color: color-mix(in srgb, var(--mm-rose) 44%, transparent);
+}
+
+.mm-notes__kind--benchmark {
+  color: var(--mm-orange-text);
+  border-color: color-mix(in srgb, var(--mm-orange) 44%, transparent);
+}
+
+.mm-notes__kind--research {
+  color: var(--mm-violet-text);
+  border-color: color-mix(in srgb, var(--mm-violet) 44%, transparent);
+}
+
+.mm-notes__kind--cost {
+  color: var(--mm-cyan-text);
+  border-color: color-mix(in srgb, var(--mm-cyan) 44%, transparent);
+}
+
+.mm-notes__entry-title {
+  font-family: var(--mm-font-display);
+  font-size: var(--mm-text-md);
+  font-weight: 500;
+  color: var(--mm-ink);
+  margin-bottom: 0.2rem;
+}
+
+.mm-notes__entry-body {
+  font-size: var(--mm-text-sm);
+  color: var(--mm-ink-2);
+  line-height: 1.6;
+  max-width: 78ch;
+}

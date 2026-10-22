@@ -1,0 +1,111 @@
+.mm-vitals__readouts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: var(--mm-space-6) var(--mm-space-5);
+}
+
+.mm-vitals__figure {
+  margin: 0;
+  border: 1px solid var(--mm-line);
+  border-radius: var(--mm-radius-md);
+  background: var(--mm-surface);
+  padding: var(--mm-space-5);
+}
+
+.mm-vitals__field-wrap {
+  aspect-ratio: 22 / 20;
+  width: 100%;
+}
+
+.mm-vitals__field {
+  width: 100%;
+  height: 100%;
+}
+
+.mm-vitals__cell {
+  fill: var(--mm-line-strong);
+  opacity: 0.55;
+  transition: opacity var(--mm-dur-3) var(--mm-ease-out-expo);
+}
+
+.mm-vitals__cell.is-active {
+  fill: var(--mm-rose);
+  opacity: 1;
+}
+
+.mm-vitals__caption {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mm-space-2);
+  margin-top: var(--mm-space-4);
+  font-size: var(--mm-text-xs);
+  color: var(--mm-ink-3);
+}
+
+.mm-vitals__caption-key {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mm-space-2);
+}
+
+.mm-vitals__swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  background: var(--mm-line-strong);
+  opacity: 0.55;
+  display: inline-block;
+}
+
+.mm-vitals__swatch.is-active {
+  background: var(--mm-rose);
+  opacity: 1;
+}
+
+.mm-vitals__caption-note {
+  color: var(--mm-ink-2);
+  line-height: 1.5;
+  margin-top: var(--mm-space-1);
+}
+
+.mm-vitals__predecessor {
+  margin-top: var(--mm-space-7);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: var(--mm-space-6);
+  align-items: center;
+  padding-top: var(--mm-space-6);
+  border-top: 1px solid var(--mm-line);
+}
+
+.mm-vitals__predecessor-title,
+.mm-vitals__subhead {
+  font-family: var(--mm-font-display);
+  font-size: var(--mm-text-lg);
+  font-weight: 400;
+  color: var(--mm-ink);
+  margin-bottom: var(--mm-space-2);
+}
+
+.mm-vitals__predecessor-trace {
+  height: 84px;
+}
+
+.mm-vitals__throughput {
+  margin-top: var(--mm-space-7);
+  padding-top: var(--mm-space-6);
+  border-top: 1px solid var(--mm-line);
+}
+
+.mm-vitals__throughput-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: var(--mm-space-6) var(--mm-space-5);
+  margin-top: var(--mm-space-5);
+}
+
+@media (max-width: 860px) {
+  .mm-vitals__predecessor {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -1,0 +1,18 @@
+.mm-layout {
+  display: grid;
+  grid-template-columns: var(--mm-rail) minmax(0, 1fr);
+  gap: var(--mm-space-7);
+  align-items: start;
+}
+
+.mm-main {
+  min-width: 0;
+  outline: none;
+}
+
+@media (max-width: 1199px) {
+  .mm-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+}

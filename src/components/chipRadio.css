@@ -1,0 +1,16 @@
+.mm-chips {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+
+/* The radio mark is hidden so the chip reads as a toggle, but the input
+   itself stays in the accessibility tree and keeps the radio semantics. */
+.mm-chips [data-baseweb='radio'] {
+  margin-right: 0;
+}
+
+.mm-chips [data-baseweb='radio-mark'] {
+  display: none;
+}

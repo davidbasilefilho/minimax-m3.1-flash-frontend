@@ -1,0 +1,34 @@
+.mm-slogan {
+  font-family: var(--mm-font-editorial);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3.4vw, 2.35rem);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  color: var(--mm-ink);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.mm-slogan__line {
+  display: flex;
+  align-items: center;
+  gap: 0.28em;
+}
+
+.mm-slogan__motif {
+  width: 1.06em;
+  height: 0.78em;
+  color: var(--mm-ink-2);
+  flex: none;
+}
+
+/* The filled disc that stands in for the "o" in Everyone. */
+.mm-slogan__disc {
+  display: inline-block;
+  width: 0.56em;
+  height: 0.56em;
+  border-radius: 50%;
+  background: currentColor;
+  margin: 0 0.02em 0 0.04em;
+}

@@ -1,0 +1,191 @@
+.mm-thinking__dial {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mm-space-4);
+}
+
+.mm-thinking__fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.mm-thinking__legend {
+  font-size: var(--mm-text-xs);
+  color: var(--mm-ink-3);
+  padding: 0 0 var(--mm-space-3);
+}
+
+.mm-thinking__note {
+  color: var(--mm-ink-2);
+  font-size: var(--mm-text-md);
+  max-width: 46ch;
+}
+
+.mm-thinking__readout {
+  display: flex;
+  gap: var(--mm-space-7);
+  padding-top: var(--mm-space-4);
+  border-top: 1px solid var(--mm-line);
+}
+
+.mm-thinking__readout > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.mm-thinking__readout-label {
+  font-size: var(--mm-text-xs);
+  color: var(--mm-ink-3);
+}
+
+.mm-thinking__readout-value {
+  font-size: var(--mm-text-xl);
+  font-weight: 300;
+  color: var(--mm-ink);
+  display: flex;
+  align-items: baseline;
+  gap: 0.15rem;
+}
+
+.mm-thinking__readout-unit {
+  font-size: var(--mm-text-sm);
+  color: var(--mm-ink-3);
+  font-family: var(--mm-font-body);
+}
+
+.mm-thinking__visual {
+  border: 1px solid var(--mm-line);
+  border-radius: var(--mm-radius-md);
+  background: var(--mm-surface);
+  padding: var(--mm-space-5);
+}
+
+.mm-thinking__trace {
+  height: 150px;
+}
+
+.mm-thinking__trace-caption {
+  margin-top: var(--mm-space-4);
+  font-size: var(--mm-text-xs);
+  color: var(--mm-ink-3);
+}
+
+.mm-thinking__curves {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--mm-space-5);
+  margin-top: var(--mm-space-7);
+}
+
+.mm-thinking__curve {
+  margin: 0;
+  border: 1px solid var(--mm-line);
+  border-radius: var(--mm-radius-md);
+  background: var(--mm-surface);
+  padding: var(--mm-space-5);
+}
+
+.mm-thinking__curve-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--mm-space-3);
+  margin-bottom: var(--mm-space-3);
+  flex-wrap: wrap;
+}
+
+.mm-thinking__curve-title {
+  font-family: var(--mm-font-display);
+  font-size: var(--mm-text-md);
+  color: var(--mm-ink);
+}
+
+.mm-thinking__curve-source {
+  font-size: var(--mm-text-xs);
+  color: var(--mm-ink-3);
+}
+
+.mm-thinking__curve-svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.mm-thinking__tick {
+  font-family: var(--mm-font-body);
+  font-size: 10px;
+  fill: var(--mm-ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.mm-thinking__tick.is-active {
+  fill: var(--mm-rose-text);
+  font-weight: 600;
+}
+
+.mm-thinking__value {
+  font-family: var(--mm-font-display);
+  font-size: 13px;
+  fill: var(--mm-rose-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.mm-thinking__warning {
+  margin-top: var(--mm-space-6);
+  border: 1px solid color-mix(in srgb, var(--mm-coral) 40%, var(--mm-line));
+  border-radius: var(--mm-radius-md);
+  background: color-mix(in srgb, var(--mm-coral) 7%, var(--mm-surface));
+  padding: var(--mm-space-5);
+}
+
+.mm-thinking__warning-head {
+  display: flex;
+  gap: var(--mm-space-4);
+  align-items: flex-start;
+}
+
+.mm-thinking__warning-code {
+  font-size: var(--mm-text-xl);
+  font-weight: 300;
+  color: var(--mm-negative-text);
+  line-height: 1;
+  padding-top: 0.1rem;
+}
+
+.mm-thinking__warning-title {
+  font-family: var(--mm-font-display);
+  font-size: var(--mm-text-md);
+  font-weight: 500;
+  color: var(--mm-ink);
+  margin-bottom: var(--mm-space-2);
+}
+
+.mm-thinking__warning-body {
+  color: var(--mm-ink-2);
+  font-size: var(--mm-text-sm);
+  max-width: 62ch;
+}
+
+.mm-thinking__warning-body code {
+  font-family: var(--mm-font-mono);
+  font-size: 0.92em;
+  background: var(--mm-surface-2);
+  border: 1px solid var(--mm-line);
+  border-radius: var(--mm-radius-xs);
+  padding: 0.05em 0.35em;
+  color: var(--mm-ink);
+}
+
+.mm-thinking__error {
+  margin: var(--mm-space-4) 0 0;
+  padding: var(--mm-space-3) var(--mm-space-4);
+  background: var(--mm-canvas-deep);
+  border: 1px solid var(--mm-line);
+  border-radius: var(--mm-radius-sm);
+  font-family: var(--mm-font-mono);
+  font-size: var(--mm-text-sm);
+  color: var(--mm-negative-text);
+  overflow-x: auto;
+}

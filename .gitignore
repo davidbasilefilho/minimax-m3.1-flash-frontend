@@ -1,0 +1,19 @@
+node_modules
+dist
+dist-ssr
+.output
+.wrangler
+*.local
+.vite
+.DS_Store
+*.log
+npm-debug.log*
+.idea
+.vscode/*
+!.vscode/extensions.json
+worker-configuration.d.ts
+
+# Agent tooling installed in the workspace, not part of the project source.
+.agents
+.claude
+skills-lock.json

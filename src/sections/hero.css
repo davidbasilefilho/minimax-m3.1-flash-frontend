@@ -1,0 +1,113 @@
+.mm-hero {
+  position: relative;
+  overflow: hidden;
+  padding-block: clamp(3.5rem, 8vw, 6.5rem) clamp(3rem, 6vw, 5rem);
+  isolation: isolate;
+}
+
+/* A soft bloom in the brand gradient, kept well below the text contrast. */
+.mm-hero__bloom {
+  position: absolute;
+  top: -34%;
+  right: -14%;
+  width: 44rem;
+  height: 44rem;
+  border-radius: 50%;
+  filter: blur(130px);
+  opacity: 0.1;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.mm-hero__inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--mm-space-6);
+}
+
+.mm-hero__lockup {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: var(--mm-space-5);
+}
+
+.mm-hero__title {
+  font-size: clamp(3.4rem, 11vw, 8.5rem);
+  font-weight: 200;
+  line-height: 0.92;
+  letter-spacing: -0.045em;
+  color: var(--mm-ink);
+  margin-top: var(--mm-space-2);
+}
+
+.mm-hero__lede {
+  font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+  line-height: 1.55;
+  color: var(--mm-ink-2);
+  max-width: 60ch;
+}
+
+.mm-hero__lede strong {
+  color: var(--mm-ink);
+  font-weight: 500;
+}
+
+.mm-hero__trace {
+  height: clamp(90px, 13vw, 170px);
+  margin-top: var(--mm-space-4);
+}
+
+.mm-hero__trace-caption {
+  display: flex;
+  align-items: baseline;
+  gap: var(--mm-space-3);
+  font-size: var(--mm-text-xs);
+  color: var(--mm-ink-3);
+  flex-wrap: wrap;
+}
+
+.mm-hero__trace-label {
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+.mm-hero__trace-value {
+  color: var(--mm-rose-text);
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.mm-hero__readouts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: var(--mm-space-6) var(--mm-space-5);
+  padding-top: var(--mm-space-5);
+  border-top: 1px solid var(--mm-line);
+}
+
+.mm-hero__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--mm-space-4);
+  flex-wrap: wrap;
+  padding-top: var(--mm-space-2);
+}
+
+.mm-hero__stamp {
+  font-size: var(--mm-text-xs);
+  color: var(--mm-ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 720px) {
+  .mm-hero__lockup {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--mm-space-5);
+  }
+  .mm-hero__readouts {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
