@@ -1,0 +1,36 @@
+# Bun configuration.
+#
+# The formatter settings live here so `bun fmt` is the single formatting
+# entry point for the whole repository — no separate Prettier or oxfmt
+# config, and no formatter dependency to install.
+
+[fmt]
+# 100 columns. The codebase was written at this width, so this is a no-op
+# for most files and only catches genuinely long lines.
+printWidth = 100
+tabWidth = 2
+useTabs = false
+
+# Semicolons, single quotes in JavaScript, single quotes in JSX.
+semi = true
+singleQuote = true
+jsxSingleQuote = true
+
+quoteProps = "as-needed"
+trailingComma = "all"
+
+# Put the closing bracket of a multi-line element on the last line, so
+# JSX and object literals close flush with their opening line.
+bracketSameLine = true
+
+arrowParens = "always"
+objectWrap = "preserve"
+
+# Sorting.
+sortImports = true
+sortPackageJson = true
+sortTailwindcss = true
+
+proseWrap = "preserve"
+endOfLine = "lf"
+htmlWhitespaceSensitivity = "css"
