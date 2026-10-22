@@ -176,3 +176,21 @@ it.
 Apache 2.0 — see [`LICENSE`](./LICENSE). Copyright 2026 David Basile Filho.
 
 Third-party components keep their own licences; see [`NOTICE`](./NOTICE).
+
+---
+
+## Agent skills
+
+The workspace skills this project was built with are committed alongside the source
+rather than ignored, so the repository is self-contained:
+
+- `.agents/skills/frontend-design` — the design direction skill
+- `.agents/skills/react-compiler` — the React Compiler rules and lint setup
+- `.claude/skills/…` — the same two skills, mirrored for Claude Code
+- `skills-lock.json` — the manifest recording where each skill came from and its
+  content hash
+
+`.claude/skills/*` are links into `.agents/skills/*` on the author's machine. Git
+records the resolved content rather than the link, so a clone gets real files on
+every platform and no absolute paths to break.
+
